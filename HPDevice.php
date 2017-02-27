@@ -403,7 +403,7 @@ abstract class HPDevice extends IPSModule {
    * HP_SetValue($id, $key, $value)
    * Anpassung eines Deviceparameter siehe SetValues
    */
-  public function SetValue($key, $value) {
+  public function SetValue(string $key, $value) {
  	
 	$uniqueId = $this->ReadPropertyString("UniqueId");
 	if ( $uniqueId == '') {
@@ -461,9 +461,9 @@ abstract class HPDevice extends IPSModule {
   }
 
   /*
-   * HP_SetState(integer $id, boolean $value)
+   * HP_SetState(integer $id, boolea $value)
    */
-  public function SetState(boolean $value) {
+  public function SetState(bool $value) {
 	$nodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
 	
 	$setVal = 0;
@@ -511,7 +511,7 @@ abstract class HPDevice extends IPSModule {
  /*
    * HP_SetPosition(integer $id, integer $value)
    */
-  public function SetPosition(integer $value) {
+  public function SetPosition(int $value) {
 	$nodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
 	
 	if( $value < 0 )
@@ -561,9 +561,9 @@ abstract class HPDevice extends IPSModule {
   }
  
  /*
-   * HP_SetAutomatic(integer $id, boolean $value)
+   * HP_SetAutomatic(integer $id, boolea $value)
    */
-  public function SetAutomatic(boolean $value) {
+  public function SetAutomatic(bool $value) {
 	$nodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
 	
 	$setVal = 0;
