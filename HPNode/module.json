@@ -1,0 +1,11 @@
+{
+  "id": "{F57A1315-EC89-4E96-B883-C17095BC43A7}",
+  "name": "HPNode",
+  "type": 3,
+  "vendor": "Rademacher Homepilot",
+  "aliases": [ "Homepilot Nodes" ],
+  "parentRequirements": [ "{12D7F7B2-BE91-44D1-B4B8-2F4A33915C82}" ],
+  "childRequirements": [],
+  "implemented": [ "{2F164059-F1BA-4FD8-86FA-E4BEC6FB0870}" ],
+  "prefix": "HP"
+}

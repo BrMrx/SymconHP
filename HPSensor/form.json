@@ -1,0 +1,31 @@
+{
+  "elements": [
+    {
+      "type": "ValidationTextBox",
+      "name": "UniqueId",
+      "caption": "Unique ID"
+    }, {
+      "type": "Label",
+      "label": "Die nachfolgenden Werte, werden automatisch aktualisiert bei \"Status neu einlesen.\""
+    }, {
+      "type": "ValidationTextBox",
+      "name": "description",
+      "caption": "Beschreibung"
+	 }
+  ],
+  "actions": [
+    {
+      "type": "Button",
+      "label": "Status neu einlesen",
+      "onClick": "HP_RequestData($id);"
+    }
+  ],
+  "status": [
+    { "code": 101, "icon": "active", "caption": "Sensor wird erstellt." },
+    { "code": 102, "icon": "active", "caption": "Sensor ist aktiv." },
+    { "code": 103, "icon": "active", "caption": "Sensor wird gelöscht." },
+    { "code": 104, "icon": "inactive", "caption": "Bitte die Sensoren über die Bridge anlegen lassen." },
+    { "code": 201, "icon": "error", "caption": "Der Sensor ist nicht erreichbar." },
+    { "code": 202, "icon": "error", "caption": "Es ist ein unbekannter Fehler aufgetreten." }
+  ]
+}

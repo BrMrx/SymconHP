@@ -1,0 +1,11 @@
+{
+  "id": "{51F4E4C4-1316-4E2F-A56E-3908FCE3F0C2}",
+  "name": "HPBridge",
+  "type": 1,
+  "vendor": "Rademacher Homepilot",
+  "aliases": [ "Homepilot Bridge" ],
+  "parentRequirements": [],
+  "childRequirements": [ "{2F164059-F1BA-4FD8-86FA-E4BEC6FB0870}" ],
+  "implemented": [ "{12D7F7B2-BE91-44D1-B4B8-2F4A33915C82}" ],
+  "prefix": "HP"
+}
