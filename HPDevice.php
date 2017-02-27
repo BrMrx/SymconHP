@@ -449,7 +449,7 @@ abstract class HPDevice extends IPSModule {
     }
 	
 	if( isset($path)) {
-		IPS_LogMessage("SymconHP", "$path");
+//		IPS_LogMessage("SymconHP", "$path");
 		HP_Request($this->GetBridge(), $path, null );
         IPS_Sleep(500);
 

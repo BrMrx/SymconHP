@@ -110,7 +110,7 @@ class HPBridge extends IPSModule {
 	  
 	    if( $result->status == 'uisuccess' )
 		{
-			IPS_LogMessage("SymconHP", "erfolgreich !!");
+//			IPS_LogMessage("SymconHP", "erfolgreich !!");
 			return true;
 		}
 	    if( $result->status == 'uierror' )
