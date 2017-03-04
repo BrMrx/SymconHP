@@ -30,33 +30,36 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 ## Funktionen
 
 	// Abgleich aller Knoten
-	HP_SyncDevices($bridgeId);
+	HP_SyncDevices(int $bridgeId);
 
 	// Abgleich des Status aller Knoten
-	HP_SyncStates($bridgeId);
+	HP_SyncStates(int $bridgeId);
 
 	// Liefert zu einer UniqueID die passende Lampeninstanz
-	HP_GetDeviceByUniqueId($bridgeId, $uniqueId);
+	HP_GetDeviceByUniqueId(int $bridgeId, int $uniqueId);
 
 	// Abgleich des Status eines Knoten (HP_SyncStates sollte bevorzugewerden,
 	// da direkt alle Lampen abgeglichen werden mit nur 1 Request zur Homepiloten)
-	HP_RequestData($lightId);
+	HP_RequestData(int $lightId);
 
 	// Anpassung eines Parameter
 	//
 	// Mögliche Keys (ja nach Typ unterschiedlich):
-	// "Schaltaktor"
+	// _______________ Schaltaktor _________________
 	// SWITCH       -> true oder false für an/aus
-	// "RolloTron", 
+	//
+	// _______________ RolloTron / Rohraktor _______
 	// SHUTTER      -> true oder false für geschlossen/offens
 	// SHUTTERPOS   -> Werte für eine Rolladenposition zwichen 0 und 100%
 	// SHUTTERCMD   -> Werte für eine Rolladenposition zwichen 0 und 100% in 25% Schritten
 	// AUTOMATIC    -> true oder false für Automatik an/aus
-	// "Dimmer"
+	//
+	// _______________ Dimmer ______________________
 	// DIMMERSTATE  -> true oder false für an/aus
 	// DIMMERPOS    -> Werte für eine Helligkeit zwichen 0 und 100%
 	// DIMMERCMD    -> Werte für eine Dimmerposition zwichen 0 und 100% in 25% Schritten
-	// Für Sensoren:
+	//
+	// _______________ Für Sensoren ________________
 	// SUN          -> Sonne erkannt / nicht erkannt
 	// RAIN         -> Regen erkannt / nicht erkannt
 	// LUX          -> Lichtwert in Lux
@@ -67,23 +70,23 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// ACTTIME      -> Aktualisierungszeit als string
 
 	// Liefert einen Lampenparameter je nach Parameter (s.o.)
-	HP_GetValue($lightId, $key);
+	HP_GetValue(int $lightId, string $key);
 	
 	// Staus setzen: Ein/Aus geschlossen/offen
-	HP_SetState($lightId, $value)
-	HP_GetState($lightId)
+	HP_SetState(int $lightId, bool $value)
+	HP_GetState(int $lightId)
 	
 	// Position setzen (Werte zwichen 0 - 100%)
-	HP_SetPosition($lightId, $value)
-	HP_GetPosition($lightId)
+	HP_SetPosition(int $lightId, int $value)
+	HP_GetPosition(int $lightId)
 	
-	// Automativ Ein/Ausschalten
-	HP_SetAutomatic($lightId, $value)
-	HP_GetAutomatic($lightId)
+	// Automatik Ein/Ausschalten
+	HP_SetAutomatic(int $lightId, bool $value)
+	HP_GetAutomatic(int $lightId)
 
 	// Lampe einschalten (Richtung 100%), Rolladen runterfahren (Richtung 0%)
-	HP_DirectionUp($lightId)
+	HP_DirectionUp(int $lightId)
 	// Dimmvorgang stoppen, Rolladen stoppen
-	HP_DirectionStop($lightId)
+	HP_DirectionStop(int $lightId)
 	// Lampe ausschalten (Richtung 0%), Rolladen runterfahren (Richtung 100%)
-	HP_DirectionDown($lightId)
+	HP_DirectionDown(int $lightId)
