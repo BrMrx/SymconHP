@@ -42,9 +42,6 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// da direkt alle Lampen abgeglichen werden mit nur 1 Request zur Homepiloten)
 	HP_RequestData($lightId);
 
-	// Anpassung eines Lampenparameter (siehe SetValues)
-	HP_SetValue($lightId, $key, $value);
-
 	// Anpassung eines Parameter
 	//
 	// Mögliche Keys (ja nach Typ unterschiedlich):
@@ -53,12 +50,14 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// "RolloTron", 
 	// SHUTTER      -> true oder false für geschlossen/offens
 	// SHUTTERPOS   -> Werte für eine Rolladenposition zwichen 0 und 100%
+	// SHUTTERCMD   -> Werte für eine Rolladenposition zwichen 0 und 100% in 25% Schritten
 	// AUTOMATIC    -> true oder false für Automatik an/aus
 	// "Dimmer"
 	// DIMMERSTATE  -> true oder false für an/aus
 	// DIMMERPOS    -> Werte für eine Helligkeit zwichen 0 und 100%
+	// DIMMERCMD    -> Werte für eine Dimmerposition zwichen 0 und 100% in 25% Schritten
 	// Für Sensoren:
-	// SUN          -> Sonner erkannt / nicht erkannt
+	// SUN          -> Sonne erkannt / nicht erkannt
 	// RAIN         -> Regen erkannt / nicht erkannt
 	// LUX          -> Lichtwert in Lux
 	// WIND         -> Windgweschwindigkeit in m/s
@@ -67,13 +66,24 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// SUNDIRECTION -> Sonnenrichtung in Grad
 	// ACTTIME      -> Aktualisierungszeit als string
 
-	// Liefert einen Lampenparameter (siehe HP_SetValue)
+	// Liefert einen Lampenparameter je nach Parameter (s.o.)
 	HP_GetValue($lightId, $key);
 	
-	// Weitere Helpergunktionen für Direktverknüpfungen
+	// Staus setzen: Ein/Aus geschlossen/offen
 	HP_SetState($lightId, $value)
 	HP_GetState($lightId)
+	
+	// Position setzen (Werte zwichen 0 - 100%)
 	HP_SetPosition($lightId, $value)
 	HP_GetPosition($lightId)
+	
+	// Automativ Ein/Ausschalten
 	HP_SetAutomatic($lightId, $value)
 	HP_GetAutomatic($lightId)
+
+	// Lampe einschalten (Richtung 100%), Rolladen runterfahren (Richtung 0%)
+	HP_DirectionUp($lightId)
+	// Dimmvorgang stoppen, Rolladen stoppen
+	HP_DirectionStop($lightId)
+	// Lampe ausschalten (Richtung 0%), Rolladen runterfahren (Richtung 100%)
+	HP_DirectionDown($lightId)

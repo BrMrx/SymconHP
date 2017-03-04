@@ -8,6 +8,18 @@ abstract class HPDevice extends IPSModule {
 
   public function Create() {
 
+     if (!IPS_VariableProfileExists('CommandCtrl.HP')) 
+		 IPS_CreateVariableProfile('CommandCtrl.HP', 1);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', -3,  ' << ', '', 0x000000);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', -2,  'Stop', '', 0x000000);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', -1,  ' >> ', '', 0x000000);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', 0,   '0%',   '', 0x000000);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', 25,  '25%',  '', 0x000000);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', 50,  '50%',  '', 0x000000);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', 75,  '75%',  '', 0x000000);
+    IPS_SetVariableProfileAssociation('CommandCtrl.HP', 100, '100%', '', 0x000000);
+    IPS_SetVariableProfileIcon('CommandCtrl.HP', 'Shutter');
+	
     parent::Create();
   }
 
@@ -150,6 +162,16 @@ abstract class HPDevice extends IPSModule {
 					SetValueInteger( $valuesId, $shutterpos );
 				}
 
+				$cmdpos = $this->RoundTo25Percent($position);
+				if (!$valuesId = @$this->GetIDForIdent("SHUTTERCMD")) {
+					$valuesId = $this->RegisterVariableInteger("SHUTTERCMD", "Steuerung", "CommandCtrl.HP", 3);
+			        $this->EnableAction("SHUTTERCMD");
+					SetValueInteger( $valuesId, $cmdpos );
+				}
+				else if( GetValueInteger( $valuesId ) != $cmdpos ){
+					SetValueInteger( $valuesId, $cmdpos );
+				}
+
 				$automatik = ($values['Manuellbetrieb'] == 0);
 				if (!$valuesId = @$this->GetIDForIdent("AUTOMATIC")) {
 					$valuesId = $this->RegisterVariableBoolean("AUTOMATIC", "Automatik", "~Switch", 10);
@@ -188,6 +210,16 @@ abstract class HPDevice extends IPSModule {
 				}
 				else if( GetValueInteger( $valuesId ) != $dimmerpos ){
 					SetValueInteger( $valuesId, $dimmerpos );
+				}
+				
+				$cmdpos = $this->RoundTo25Percent($position);
+				if (!$valuesId = @$this->GetIDForIdent("DIMMERCMD")) {
+					$valuesId = $this->RegisterVariableInteger("DIMMERCMD", "Steuerung", "CommandCtrl.HP", 3);
+			        $this->EnableAction("DIMMERCMD");
+					SetValueInteger( $valuesId, $cmdpos );
+				}
+				else if( GetValueInteger( $valuesId ) != $cmdpos ){
+					SetValueInteger( $valuesId, $cmdpos );
 				}
 			break;
 
@@ -322,6 +354,10 @@ abstract class HPDevice extends IPSModule {
 	}
   }
 
+  protected function RoundTo25Percent( $value )
+  {
+	  return intval(($value + 12) /25) * 25;
+  }
   
    protected function needsRefresh($id,	$maxTime) {
   		$varObj = IPS_GetVariable( $id );
@@ -376,6 +412,8 @@ abstract class HPDevice extends IPSModule {
 		
       case 'SHUTTERPOS':
       case 'DIMMERPOS':
+      case 'SHUTTERCMD':
+      case 'DIMMERCMD':
          $NewValue = $value;
          break;
     }
@@ -402,8 +440,32 @@ abstract class HPDevice extends IPSModule {
   /*
    * HP_SetValue($id, $key, $value)
    * Anpassung eines Deviceparameter siehe SetValues
+   
+ verfügbare Commands
+      UP:1,
+        STOP:2,
+        DOWN:3,
+        POSITION_0:4,
+        POSITION_25:5,
+        POSITION_50:6,
+        POSITION_75:7,
+        POSITION_100:8,
+        POSITION_N:9,
+        ON:10,
+        OFF:11,
+        INCREMENT:23,
+        DECREMENT:24
+        
+        POS wird nur bei Kommando '9' benötigt
+        bei den anderen Kommandos hat es aber keine Auswirkung
+        
+        
+        
+        mit http://homepilotip/deviceajax.do?devices=1
+        bekommt man eine Deviceliste mit den Statis der Aktoren
+
    */
-  public function SetValue(string $key, $value) {
+  protected function SetValue(string $key, $value) {
  	
 	$uniqueId = $this->ReadPropertyString("UniqueId");
 	if ( $uniqueId == '') {
@@ -440,6 +502,38 @@ abstract class HPDevice extends IPSModule {
 		
 		$path= "cid=9&did=$uniqueId&goto=$pos&command=1";
         break;
+		
+	  case 'SHUTTERCMD':
+			switch( $value )
+			{
+				case -1: // Up					break;
+					$value = -3;
+					break;
+				case -3: // Down
+					$value = -1;
+					break;
+			}
+			// ohne break weiter !!
+	  
+	  case 'DIMMERCMD':
+		if( $value < 0 ) {
+			switch( $value )
+			{
+				case -1: // Up				
+				case -2: // Stop
+				case -3: // Down
+					$cmd = -$value;
+					$path= "cid=$cmd&did=$uniqueId&command=1";
+					break;
+				default:
+					return;
+			}
+		}
+		else {
+			$value = $this->LinearizeToDevice($value);
+			$path= "cid=9&did=$uniqueId&goto=$value&command=1";
+		}
+		break;
 		
       case 'SHUTTERPOS':
       case 'DIMMERPOS':
@@ -533,6 +627,67 @@ abstract class HPDevice extends IPSModule {
 			return $this->SetValue("SHUTTERPOS", $value);
 	}
 	  
+  }
+
+  /*
+   * HP_DirectionUp(integer $id)
+   */
+  public function DirectionUp() {
+	$nodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
+		
+	switch( $nodeFeatures )
+	{
+		case 0: //  "Schaltaktor"
+			return $this->SetValue("SWITCH", true);
+
+		case 2: //  "Dimmer"
+			return $this->SetValue("DIMMERCMD", -1);
+			
+		case 1: //  "RolloTron"
+		case 3: //  "Rohrmotoraktor Umweltsensor"
+		case 4: //  "Rohrmotoraktor"
+			return $this->SetValue("SHUTTERCMD", -3);
+	}
+	  
+  }
+
+    /*
+   * HP_DirectionStop(integer $id)
+   */
+  public function DirectionStop() {
+	$nodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
+		
+	switch( $nodeFeatures )
+	{
+		case 2: //  "Dimmer"
+			return $this->SetValue("DIMMERCMD", -2);
+			
+		case 1: //  "RolloTron"
+		case 3: //  "Rohrmotoraktor Umweltsensor"
+		case 4: //  "Rohrmotoraktor"
+			return $this->SetValue("SHUTTERCMD", -2);
+	}
+  }
+
+     /*
+   * HP_DirectionDown(integer $id)
+   */
+  public function DirectionDown() {
+	$nodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
+		
+	switch( $nodeFeatures )
+	{
+		case 0: //  "Schaltaktor"
+			return $this->SetValue("SWITCH", false);
+
+		case 2: //  "Dimmer"
+			return $this->SetValue("DIMMERCMD", -3);
+			
+		case 1: //  "RolloTron"
+		case 3: //  "Rohrmotoraktor Umweltsensor"
+		case 4: //  "Rohrmotoraktor"
+			return $this->SetValue("SHUTTERCMD", -1);
+	}
   }
 
   /*
