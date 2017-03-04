@@ -144,7 +144,7 @@ abstract class HPDevice extends IPSModule {
 			case 4: //  "Rohrmotoraktor"
 				$shutter = ($position != 0);
 				if (!$valuesId = @$this->GetIDForIdent("SHUTTER")) {
-					$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Zutand", "~ShutterMove", 1);
+					$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Zustand", "~ShutterMove", 1);
 			        $this->EnableAction("SHUTTER");
 					SetValueBoolean( $valuesId, $shutter );
 				}
@@ -194,7 +194,7 @@ abstract class HPDevice extends IPSModule {
 			case 2: //  "Dimmer"
 				$dimmerstate = ($position != 0);
 				if (!$valuesId = @$this->GetIDForIdent("DIMMERSTATE")) {
-					$valuesId = $this->RegisterVariableBoolean("DIMMERSTATE", "Zutand", "~Switch", 1);
+					$valuesId = $this->RegisterVariableBoolean("DIMMERSTATE", "Zustand", "~Switch", 1);
 			        $this->EnableAction("DIMMERSTATE");
 					SetValueBoolean( $valuesId, $dimmerstate );
 				}
