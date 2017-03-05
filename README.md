@@ -20,7 +20,7 @@ Die Einrichtung erfolgt über die Modulverwaltung von Symcon. Nach der Installat
 
 **Linearisierung der Positionen**
 
-Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit den realen Positionen der Rollade übereinstimmen gibt es die Möglichkeit die Position durch 3 Stützpunkte zu liniarisieren. Hierzu fährt man die realen Rolladenpositionen 25%, 50% und 75% an und notiert sich die angezeigten Prozentwerte. Dannach werden die notierten Werte in die Konfiguration der einzelnen Knoten eingetragen. Nach der Übernahme der Konfiguration werden die Werte bei der Anzeige und Ansteuerung entsprechend liniarisiert. D.h. möchte man die Rollade zu 50% schließen muss man den Wert nun auch 50% vorgeben.
+Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit den realen Positionen der Rollade übereinstimmen gibt es die Möglichkeit die Position durch 3 Stützpunkte zu liniarisieren. Hierzu fährt man die realen Rollladenpositionen 25%, 50% und 75% an und notiert sich die angezeigten Prozentwerte. Dannach werden die notierten Werte in die Konfiguration der einzelnen Knoten eingetragen. Nach der Übernahme der Konfiguration werden die Werte bei der Anzeige und Ansteuerung entsprechend liniarisiert. D.h. möchte man die Rollade zu 50% schließen muss man den Wert nun auch 50% vorgeben.
 
 ## Voraussetzung
 
@@ -50,8 +50,8 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	//
 	// _______________ RolloTron / Rohraktor _______
 	// SHUTTER      -> true oder false für geschlossen/offens
-	// SHUTTERPOS   -> Werte für eine Rolladenposition zwichen 0 und 100%
-	// SHUTTERCMD   -> Werte für eine Rolladenposition zwichen 0 und 100% in 25% Schritten
+	// SHUTTERPOS   -> Werte für eine Rollladenposition zwichen 0 und 100%
+	// SHUTTERCMD   -> Werte für eine Rollladenposition zwichen 0 und 100% in 25% Schritten
 	// AUTOMATIC    -> true oder false für Automatik an/aus
 	//
 	// _______________ Dimmer ______________________
@@ -84,9 +84,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	HP_SetAutomatic(int $lightId, bool $value)
 	HP_GetAutomatic(int $lightId)
 
-	// Lampe einschalten (Richtung 100%), Rolladen runterfahren (Richtung 0%)
+	// Lampe einschalten (Richtung 100%), Rollladen runterfahren (Richtung 0%)
 	HP_DirectionUp(int $lightId)
-	// Dimmvorgang stoppen, Rolladen stoppen
+	// Dimmvorgang stoppen, Rollladen stoppen
 	HP_DirectionStop(int $lightId)
-	// Lampe ausschalten (Richtung 0%), Rolladen runterfahren (Richtung 100%)
+	// Lampe ausschalten (Richtung 0%), Rollladen runterfahren (Richtung 100%)
 	HP_DirectionDown(int $lightId)
