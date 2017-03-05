@@ -382,7 +382,10 @@ abstract class HPDevice extends IPSModule {
     }
 }
 
-  public function RequestAction($key, $value) {
+  public function RequestAction( string $key, string $strValue) {
+	$value =  intval($strValue);
+	  
+	$NewValue = 0;
 	  
     switch ($key) {
       case 'SWITCH':
@@ -416,10 +419,14 @@ abstract class HPDevice extends IPSModule {
       case 'DIMMERCMD':
          $NewValue = $value;
          break;
+       
+       default:
+          throw new Exception("Invalid Ident '$key'");
+         
     }
 	
 
-   $this->SetValue($key, $NewValue);
+     $this->SetValue($key, $NewValue);
    
    
   }
