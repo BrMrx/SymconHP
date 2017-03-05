@@ -197,7 +197,7 @@ class HPBridge extends IPSModule {
           IPS_ApplyChanges($deviceId);
 		  
 		  // Daten zuordnen, Variablen anlegen
-		  HP_ApplyData($deviceId, json_encode($node));
+		  HP_ApplyJsonData($deviceId, json_encode($node));
 
 
         }
@@ -258,7 +258,7 @@ class HPBridge extends IPSModule {
 
 		  
 		  // Daten zuordnen, Variablen anlegen
-		  HPSensor_ApplyData($sensorId, json_encode($sensor));
+		  HPSensor_ApplyJsonData($sensorId, json_encode($sensor));
         }
       }
 	  
@@ -281,7 +281,7 @@ class HPBridge extends IPSModule {
         $uniqueId = (string)$node->did;
         $deviceId = $this->GetDeviceByUniqueId($uniqueId);
         if($deviceId > 0) 
-			HP_ApplyData($deviceId, json_encode($node));
+			HP_ApplyJsonData($deviceId, json_encode($node));
       }
     }
 	$sensors = $this->Request('meters=1');
@@ -301,7 +301,7 @@ class HPBridge extends IPSModule {
 			   $sensor->data = $data;
 		   }
 	
-			HPSensor_ApplyData($sensorId, json_encode($sensor));
+			HPSensor_ApplyJsonData($sensorId, json_encode($sensor));
 		}			
       }
     }

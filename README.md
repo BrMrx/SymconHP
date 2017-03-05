@@ -38,12 +38,24 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// Liefert zu einer UniqueID die passende Lampeninstanz
 	HP_GetDeviceByUniqueId(int $bridgeId, int $uniqueId);
 
-	// Abgleich des Status eines Knoten (HP_SyncStates sollte bevorzugewerden,
-	// da direkt alle Lampen abgeglichen werden mit nur 1 Request zur Homepiloten)
-	HP_RequestData(int $lightId);
 
-	// Anpassung eines Parameter
-	//
+	// Aktualisierung der Daten eines Knotens (Aktors)
+	// Parameter ist ein JSON string der alle Daten des Aktors beinhaltet
+	HP_ApplyJsonData( int $instanzId, string $jsonString )
+	
+	// Aktualisierung der Daten eines Sensors
+	// Parameter ist ein JSON string der alle Daten des Sensors beinhaltet
+	HPSensor_ApplyJsonData( int $instanzId, string $jsonString )
+	
+
+	// Liefert zu einer UniqueID die passende Sensorinstanz
+	HPSensor_GetDeviceByUniqueId(int $bridgeId, int $uniqueId);
+
+	// Abgleich des Status eines Knoten (HP_SyncStates sollte bevorzugewerden,
+	// da direkt alle Aktoren abgeglichen werden mit nur 1 Request zur Homepiloten)
+	HP_RequestData(int $lightId);
+	HPSensor_RequestData(int $lightId);
+
 	// Mögliche Keys (ja nach Typ unterschiedlich):
 	// _______________ Schaltaktor _________________
 	// SWITCH       -> true oder false für an/aus
@@ -59,6 +71,11 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// DIMMERPOS    -> Werte für eine Helligkeit zwichen 0 und 100%
 	// DIMMERCMD    -> Werte für eine Dimmerposition zwichen 0 und 100% in 25% Schritten
 	//
+
+	// Liefert einen Knotenparameter je nach Parameter (s.o.)
+	HP_GetValue(int $lightId, string $key);
+			
+	// Mögliche Keys (ja nach Typ unterschiedlich):
 	// _______________ Für Sensoren ________________
 	// SUN          -> Sonne erkannt / nicht erkannt
 	// RAIN         -> Regen erkannt / nicht erkannt
@@ -68,9 +85,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// SUNHEIGHT    -> Sonnehöhe in Grad
 	// SUNDIRECTION -> Sonnenrichtung in Grad
 	// ACTTIME      -> Aktualisierungszeit als string
-
-	// Liefert einen Lampenparameter je nach Parameter (s.o.)
-	HP_GetValue(int $lightId, string $key);
+	
+	// Liefert einen Sensorparameter je nach Parameter (s.o.)
+	HPSensor_GetValue(int $lightId, string $key);
 	
 	// Staus setzen: Ein/Aus geschlossen/offen
 	HP_SetState(int $lightId, bool $value)

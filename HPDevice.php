@@ -37,11 +37,11 @@ abstract class HPDevice extends IPSModule {
     $this->ConnectParent("{51F4E4C4-1316-4E2F-A56E-3908FCE3F0C2}");
   }
 
-  public function ApplyData(string $strData) {
+  public function ApplyJsonData(string $jsonString) {
 	  
-	  $aData = json_decode($strData);
+	  $aData = json_decode($jsonString);
 	  if( !$aData ) {
-	    throw new Exception("Invalid JSON Data '$strData'");
+	    throw new Exception("Invalid JSON Data '$jsonString'");
 	  }
 	  
     $data = (array)$aData;
@@ -379,7 +379,7 @@ abstract class HPDevice extends IPSModule {
 	
 	if($data)
 	{
-		$this->ApplyData(json_encode($data));
+		$this->ApplyJsonData(json_encode($data));
 	}
 	else
 	{
