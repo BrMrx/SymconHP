@@ -379,7 +379,7 @@ abstract class HPDevice extends IPSModule {
 	
 	if($data)
 	{
-		$this->ApplyData($data);
+		$this->ApplyData(json_encode($data));
 	}
 	else
 	{
