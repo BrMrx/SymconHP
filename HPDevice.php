@@ -370,7 +370,7 @@ abstract class HPDevice extends IPSModule {
    * da direkt alle Lampen abgeglichen werden mit nur 1 Request zum Homepiloten)
    */
   public function RequestData() {
-    $data = HP_Request($this->GetBridge(), $this->BasePath(), null);
+    $data = HP_Request($this->GetBridge(), $this->BasePath() );
 	
 	if($data)
 	{
@@ -552,7 +552,7 @@ abstract class HPDevice extends IPSModule {
 	
 	if( isset($path)) {
 //		IPS_LogMessage("SymconHP", "$path");
-		HP_Request($this->GetBridge(), $path, null );
+		HP_Request($this->GetBridge(), $path );
         IPS_Sleep(500);
 
 		$this->RequestData();

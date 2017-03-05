@@ -27,7 +27,7 @@ class HPBridge extends IPSModule {
   }
 
   protected function RegisterTimer($ident, $interval, $script) {
-    $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
+	$id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
 
     if ($id && IPS_GetEvent($id)['EventType'] <> 1) {
       IPS_DeleteEvent($id);
@@ -67,21 +67,33 @@ class HPBridge extends IPSModule {
 
 
   private function GetHomePilotCategory() {
-    if($this->HomePilotCategory == '') $this->HomePilotCategory = $this->ReadPropertyString('HomePilotCategory');
+    if($this->HomePilotCategory == '') {
+    	$this->HomePilotCategory = $this->ReadPropertyString('HomePilotCategory');
+    }	
     return $this->HomePilotCategory;
   }
+  
   private function GetHomePilotSensorCategory() {
-    if($this->HomePilotSensorCategory == '') $this->HomePilotSensorCategory = $this->ReadPropertyString('HomePilotSensorCategory');
+    if($this->HomePilotSensorCategory == '') {
+    	$this->HomePilotSensorCategory = $this->ReadPropertyString('HomePilotSensorCategory');
+    }	
     return $this->HomePilotSensorCategory;
   }
 
   private function GetHost() {
-    if($this->Host == '') $this->Host = $this->ReadPropertyString('Host');
+    if($this->Host == '') {
+    	$this->Host = $this->ReadPropertyString('Host');
+    }
     return $this->Host;
   }
 
-  
-  public function Request(string $path, array $data = null) {
+  /*
+  Direkten Request an den Homepiloten schicken
+   Der Parameter $path wird and das Kommando:
+   "http://$host/deviceajax.do"
+   angehangen
+  */
+  public function Request( string $path ) {
     $host = $this->GetHost();
  
  
@@ -100,59 +112,42 @@ class HPBridge extends IPSModule {
 
 	
     if ($status == '0') {
-      $this->SetStatus(203);
-      return false;
+		$this->SetStatus(203);
+		return false;
     } elseif ($status != '200') {
-      $this->SetStatus(201);
-      return false;
+		$this->SetStatus(201);
+		return false;
     } else {
-      $result = json_decode($result);
+		$result = json_decode($result);
 	  
-	    if( $result->status == 'uisuccess' )
-		{
+	    if( $result->status == 'uisuccess' ) {
 //			IPS_LogMessage("SymconHP", "erfolgreich !!");
 			return true;
 		}
-	    if( $result->status == 'uierror' )
-		{
+	    if( $result->status == 'uierror' ) {
 			IPS_LogMessage("SymconHP", "Fehler !!".$result->message );
 			return false;
 		}
 
-      if ($result->status != 'ok') {
- 		  
-        $this->SetStatus(201);
-        return false;
-      }
+		if ($result->status != 'ok') {
+ 			$this->SetStatus(201);
+			return false;
+		}
 
-	if( property_exists( $result, "devices" ) )
-		$result = $result->devices;
-	elseif( property_exists( $result, "meters" ) )
-		$result = $result->meters;
-	elseif( property_exists( $result, "data" ) )
-		$result = $result->data;
-	elseif( property_exists( $result, "device" ) )
-		$result = $result->device;
-	else
-		$result = null;
-	  
-      if (isset($data)) {
-        if (count($result) > 0) {
-          foreach ($result as $item) {
-            if (@$item->error) {
-              IPS_LogMessage("HP_Bridge", print_r(@$item->error, 1));
-              $this->SetStatus(299);
-              return false;
-            }
-          }
-        }
-        $this->SetStatus(102);
-        return true;
-      } else {
-        $this->SetStatus(102);
-        return $result;
-      }
-    }
+		if( property_exists( $result, "devices" ) ) {
+			$result = $result->devices;
+		} elseif( property_exists( $result, "meters" ) ) {
+			$result = $result->meters;
+		} elseif( property_exists( $result, "data" ) ) {
+			$result = $result->data;
+		} elseif( property_exists( $result, "device" ) ) {
+			$result = $result->device;
+		}else {
+			$result = null;
+	    }
+		$this->SetStatus(102);
+		return $result;
+	}
   }
 
     /*
@@ -256,8 +251,7 @@ class HPBridge extends IPSModule {
 		  // nun noch die Daten abfragen
 		   $data = $this->Request($dataRequest );
 		   
-		   if( $data )
-		   {
+		   if( $data ) {
 			   // Ergänze Daten
 			   $sensor->data = $data;
 		   }
