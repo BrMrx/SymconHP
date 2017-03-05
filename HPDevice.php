@@ -382,8 +382,9 @@ abstract class HPDevice extends IPSModule {
     }
 }
 
-  public function RequestAction( string $key, string $strValue) {
-	$value =  intval($strValue);
+  //public function RequestAction( string $key, string $strValue) {
+  public function RequestAction( $key, $strValue) {
+ 	$value =  intval($strValue);
 	  
 	$NewValue = 0;
 	  
