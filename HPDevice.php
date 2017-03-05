@@ -37,7 +37,12 @@ abstract class HPDevice extends IPSModule {
     $this->ConnectParent("{51F4E4C4-1316-4E2F-A56E-3908FCE3F0C2}");
   }
 
-  public function ApplyData($aData) {
+  public function ApplyData(string $strData) {
+	  
+	  $aData = json_decode($strData);
+	  if( !$aData ) {
+	    throw new Exception("Invalid JSON Data '$strData'");
+	  }
 	  
     $data = (array)$aData;
 	  
