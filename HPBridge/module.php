@@ -21,7 +21,7 @@ class HPBridge extends IPSModule {
 
     parent::ApplyChanges();
 
-    $this->RegisterTimer('UPDATE', $this->ReadPropertyString('UpdateInterval'), 'HP_SyncStates($id)');
+    $this->RegisterTimer('UPDATE', $this->ReadPropertyInteger('UpdateInterval'), 'HP_SyncStates($id)');
 
     $this->ValidateConfiguration();
   }
