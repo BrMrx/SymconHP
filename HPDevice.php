@@ -104,6 +104,7 @@ abstract class HPDevice extends IPSModule {
 						);
 		
 		 $nodeFeatures = 0;
+		 $lbDefault=true;
 		 foreach ($typeList as $typeId => $typeKeword) 
 		 {
 			$lPos = strpos($productName, $typeKeword );
@@ -111,7 +112,13 @@ abstract class HPDevice extends IPSModule {
 				continue;
 			
 			$nodeFeatures = $typeId;
+			$lbDefault=false;
 			break;
+		 }
+		 
+		 if( $lbDefault )
+		 {
+     		IPS_LogMessage("SymconHP", "unbekannter Typ '".$productName."' -> Standardbehandlung als Schalter");
 		 }
 
 
