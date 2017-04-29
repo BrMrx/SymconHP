@@ -17,7 +17,7 @@ class HPSensor extends HPDevice {
   }
 
   protected function BasePath() {
-    $id = $this->ReadPropertyInteger("UniqueId");
+    $id = intval($this->ReadPropertyString("UniqueId"));
     return "meter=$id";
   }
 
