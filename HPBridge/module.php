@@ -68,14 +68,14 @@ class HPBridge extends IPSModule {
 
   private function GetHomePilotCategory() {
     if($this->HomePilotCategory == '') {
-    	$this->HomePilotCategory = $this->ReadPropertyString('HomePilotCategory');
+    	$this->HomePilotCategory = $this->ReadPropertyInteger('HomePilotCategory');
     }	
     return $this->HomePilotCategory;
   }
   
   private function GetHomePilotSensorCategory() {
     if($this->HomePilotSensorCategory == '') {
-    	$this->HomePilotSensorCategory = $this->ReadPropertyString('HomePilotSensorCategory');
+    	$this->HomePilotSensorCategory = $this->ReadPropertyInteger('HomePilotSensorCategory');
     }	
     return $this->HomePilotSensorCategory;
   }
