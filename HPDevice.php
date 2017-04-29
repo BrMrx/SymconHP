@@ -100,7 +100,8 @@ abstract class HPDevice extends IPSModule {
 						1 => "RolloTron",
 						2 => "Dimmer",
 						3 => "Rohrmotoraktor Umweltsensor",
-						4 => "Rohrmotoraktor"
+						4 => "Rohrmotoraktor",
+						5 => "Rohrmotor"
 						);
 		
 		 $nodeFeatures = 0;
@@ -154,6 +155,7 @@ abstract class HPDevice extends IPSModule {
 			case 1: //  "RolloTron"
 			case 3: //  "Rohrmotoraktor Umweltsensor"
 			case 4: //  "Rohrmotoraktor"
+			case 5: //  "Rohrmotor"
 				$shutter = ($position != 0);
 				if (!$valuesId = @$this->GetIDForIdent("SHUTTER")) {
 					$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Zustand", "~ShutterMove", 1);
@@ -595,6 +597,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->SetValue("SHUTTER", $setVal);
 	}
 	  
@@ -617,6 +620,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->GetValue("SHUTTER" );
 	}
 	return false;
@@ -644,6 +648,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->SetValue("SHUTTERPOS", $value);
 	}
 	  
@@ -666,6 +671,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->SetValue("SHUTTERCMD", -3);
 	}
 	  
@@ -685,6 +691,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->SetValue("SHUTTERCMD", -2);
 	}
   }
@@ -706,6 +713,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->SetValue("SHUTTERCMD", -1);
 	}
   }
@@ -730,6 +738,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->GetValue("SHUTTERPOS");
 	}
 	return 0;
@@ -750,6 +759,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->SetValue("AUTOMATIC", $setVal);
 	}
 	  
@@ -766,6 +776,7 @@ abstract class HPDevice extends IPSModule {
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
 		case 4: //  "Rohrmotoraktor"
+		case 5: //  "Rohrmotor"
 			return $this->GetValue("AUTOMATIC" );
 	}
 	return false;

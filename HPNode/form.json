@@ -32,6 +32,7 @@
         { "value": 2, "label": "Dimmer" },
         { "value": 3, "label": "Rohrmotoraktor Umweltsensor" },
         { "value": 4, "label": "Rohrmotoraktor" }
+        { "value": 5, "label": "Rohrmotor" }
       ]
     }, {
       "type": "ValidationTextBox",
