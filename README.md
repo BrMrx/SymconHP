@@ -27,6 +27,10 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 * Rademacher Homepilot 1 oder 2.
 * ab Symcon Version 4
 
+## Änderungen
+ ** Version 1.3 **
+ * Der Bewegungsmelder / Aktor 9484 wird nun voll unterstützt
+
 ## Funktionen
 
 	// Abgleich aller Knoten

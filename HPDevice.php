@@ -356,6 +356,19 @@ abstract class HPDevice extends IPSModule {
 							SetValueString( $valuesId, $akttime );
 						}
 					break;
+					
+					// Bewegungssensor
+					case 'Bewegung':
+						$movement = ($sValue != "Nicht erkannt");
+						
+						if (!$valuesId = @$this->GetIDForIdent("MOTION")) {
+							$valuesId = $this->RegisterVariableBoolean("MOTION", "Bewegung", "~Motion", 1);
+							SetValueBoolean( $valuesId, $movement );
+						}
+						else if( GetValueBoolean( $valuesId ) != $movement ){
+							SetValueBoolean( $valuesId, $movement );
+						}
+					break;
 
 					default:
 						IPS_LogMessage("HPBridge","unknown Sensor Value '$sKey': $sValue");
