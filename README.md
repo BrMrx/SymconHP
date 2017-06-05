@@ -28,8 +28,11 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 * ab Symcon Version 4
 
 ## Änderungen
- ** Version 1.3 **
- * Der Bewegungsmelder / Aktor 9484 wird nun voll unterstützt
+** Version 1.4 **
+* SX5 Garagentorantrieb unterstützt
+ 
+** Version 1.3 **
+* Der Bewegungsmelder / Aktor 9484 wird nun voll unterstützt
 
 ## Funktionen
 
