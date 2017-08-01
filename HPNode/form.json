@@ -34,7 +34,8 @@
         { "value": 4, "label": "Rohrmotoraktor" },
         { "value": 5, "label": "Rohrmotor" },
         { "value": 6, "label": "Garagentorantrieb" },
-        { "value": 7: "label": "Connect-Aktor" }
+        { "value": 7: "label": "Connect-Aktor" },
+        { "value": 8: "label": "RolloTube" }
       ]
     }, {
       "type": "ValidationTextBox",

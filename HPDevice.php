@@ -103,7 +103,8 @@ abstract class HPDevice extends IPSModule {
 						4 => "Rohrmotoraktor",
 						5 => "Rohrmotor",
 						6 => "SX5",
-						7 => "Connect-Aktor"
+						7 => "Connect-Aktor",
+						8 => "RolloTube"
 						);
 		
 		 $nodeFeatures = 0;
@@ -160,6 +161,7 @@ abstract class HPDevice extends IPSModule {
 			case 5: //  "Rohrmotor"
 			case 6: //  "SX5 Garagentor Stellmotor"
 			case 7: //  "Connect-Aktor"
+			case 8: //  "RolloTube"
 				$shutter = ($position != 0);
 				if (!$valuesId = @$this->GetIDForIdent("SHUTTER")) {
 					$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Zustand", "~ShutterMove", 1);
@@ -617,6 +619,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->SetValue("SHUTTER", $setVal);
 	}
 	  
@@ -642,6 +645,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->GetValue("SHUTTER" );
 	}
 	return false;
@@ -672,6 +676,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->SetValue("SHUTTERPOS", $value);
 	}
 	  
@@ -697,6 +702,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->SetValue("SHUTTERCMD", -3);
 	}
 	  
@@ -719,6 +725,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->SetValue("SHUTTERCMD", -2);
 	}
   }
@@ -743,6 +750,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->SetValue("SHUTTERCMD", -1);
 	}
   }
@@ -770,6 +778,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->GetValue("SHUTTERPOS");
 	}
 	return 0;
@@ -793,6 +802,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->SetValue("AUTOMATIC", $setVal);
 	}
 	  
@@ -812,6 +822,7 @@ abstract class HPDevice extends IPSModule {
 		case 5: //  "Rohrmotor"
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
+		case 8: //  "RolloTube"
 			return $this->GetValue("AUTOMATIC" );
 	}
 	return false;

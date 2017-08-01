@@ -29,6 +29,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 1.5 ###
+* Connect-Aktor und RolloTube unterstützt
+
 ### Version 1.4 ###
 * SX5 Garagentorantrieb unterstützt
  
