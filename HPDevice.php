@@ -104,7 +104,8 @@ abstract class HPDevice extends IPSModule {
 						5 => "Rohrmotor",
 						6 => "SX5",
 						7 => "Connect-Aktor",
-						8 => "RolloTube"
+						8 => "RolloTube",
+						9 => "Universal-Aktor"
 						);
 		
 		 $nodeFeatures = 0;
@@ -144,6 +145,7 @@ abstract class HPDevice extends IPSModule {
 		switch($nodeFeatures )
 		{
 			case 0: //  "Schaltaktor"
+			case 9: //  Universal-Aktor
 				$switch = ($position != 0);
 				if (!$valuesId = @$this->GetIDForIdent("SWITCH")) {
 					$valuesId = $this->RegisterVariableBoolean("SWITCH", "Schalter", "~Switch", 1);
@@ -376,13 +378,78 @@ abstract class HPDevice extends IPSModule {
 						}
 					break;
 
+					// Produktname Sensor DuoFern Funksender UP
+					case 'Schließer':
+						$shutter = ($sValue == "Geöffnet");
+						
+						if (!$valuesId = @$this->GetIDForIdent("SHUTTER")) {
+							$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Schließer", "~Window", 1);
+							SetValueBoolean( $valuesId, $shutter );
+						}
+						else if( GetValueBoolean( $valuesId ) != $shutter ){
+							SetValueBoolean( $valuesId, $shutter );
+						}
+					break;
+					
+					// Produktname Sensor DuoFern Funksender UP
+					case 'HomePilot-Zone':
+						$zone = ($sValue == "Betreten");
+						
+						if (!$valuesId = @$this->GetIDForIdent("HP_ZONE")) {
+							$valuesId = $this->RegisterVariableBoolean("HP_ZONE", "HomePilot-Zone", "~Presence", 1);
+							SetValueBoolean( $valuesId, $zone );
+						}
+						else if( GetValueBoolean( $valuesId ) != $zone ){
+							SetValueBoolean( $valuesId, $zone );
+						}
+					break;
+
+					// Rauchsensor
+					case 'Rauch':
+						$smoke = ($sValue != "Nicht erkannt");
+						
+						if (!$valuesId = @$this->GetIDForIdent("SMOKE")) {
+							$valuesId = $this->RegisterVariableBoolean("SMOKE", "Rauch", "~Alert", 1);
+							SetValueBoolean( $valuesId, $smoke );
+						}
+						else if( GetValueBoolean( $valuesId ) != $smoke ){
+							SetValueBoolean( $valuesId, $smoke );
+						}
+					break;
+					
+					// Batterie-Status (Rauchsensor)
+					case 'Batterie-Status':
+						$batterie = intval(str_replace( ',','.',$sValue));
+						
+						if (!$valuesId = @$this->GetIDForIdent("BATTERIE")) {
+							$valuesId = $this->RegisterVariableInteger("BATTERIE", "Batterie Status", "~Intensity.100", 2);
+							SetValueInteger( $valuesId, $batterie );
+						}
+						else if( GetValueFloat( $valuesId ) != $batterie || $this->needsRefresh($valuesId,10*60) ){
+							SetValueInteger( $valuesId, $batterie );
+						}
+					break;
+					
+					// DuoFern Raumthermostat 
+					case 'Aktueller Sollwert':
+						$temperature = floatval(str_replace( ',','.',$sValue));
+						
+						if (!$valuesId = @$this->GetIDForIdent("TEMPERATUR_NOM")) {
+							$valuesId = $this->RegisterVariableFloat("TEMPERATUR_NOM", "Solltemperatur", "~Temperature", 5);
+							SetValueFloat( $valuesId, $temperature );
+						}
+						else if( GetValueFloat( $valuesId ) != $temperature || $this->needsRefresh($valuesId,10*60) ){
+							SetValueFloat( $valuesId, $temperature );
+						}
+					break;
+
+
 					default:
 						IPS_LogMessage("HPBridge","unknown Sensor Value '$sKey': $sValue");
 					break;
 					
 				}
 			}
-		   
 	   }
 	}
   }
@@ -608,6 +675,7 @@ abstract class HPDevice extends IPSModule {
 	switch( $nodeFeatures )
 	{
 		case 0: //  "Schaltaktor"
+		case 9: //  Universal-Aktor
 			return $this->SetValue("SWITCH", $setVal);
 
 		case 2: //  "Dimmer"
@@ -634,6 +702,7 @@ abstract class HPDevice extends IPSModule {
 	switch( $nodeFeatures )
 	{
 		case 0: //  "Schaltaktor"
+		case 9: //  Universal-Aktor
 			return $this->GetValue("SWITCH");
 
 		case 2: //  "Dimmer"
@@ -665,6 +734,7 @@ abstract class HPDevice extends IPSModule {
 	switch( $nodeFeatures )
 	{
 		case 0: //  "Schaltaktor"
+		case 9: //  Universal-Aktor
 			return $this->SetValue("SWITCH", $value > 0);
 
 		case 2: //  "Dimmer"
@@ -691,6 +761,7 @@ abstract class HPDevice extends IPSModule {
 	switch( $nodeFeatures )
 	{
 		case 0: //  "Schaltaktor"
+		case 9: //  Universal-Aktor
 			return $this->SetValue("SWITCH", true);
 
 		case 2: //  "Dimmer"
@@ -739,6 +810,7 @@ abstract class HPDevice extends IPSModule {
 	switch( $nodeFeatures )
 	{
 		case 0: //  "Schaltaktor"
+		case 9: //  Universal-Aktor
 			return $this->SetValue("SWITCH", false);
 
 		case 2: //  "Dimmer"
@@ -764,6 +836,7 @@ abstract class HPDevice extends IPSModule {
 	switch( $nodeFeatures )
 	{
 		case 0: //  "Schaltaktor"
+		case 9: //  Universal-Aktor
 			if( $this->GetValue("SWITCH") > 0 )
 				return 1;
 			else

@@ -29,6 +29,10 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 1.6 ###
+* Universal-Aktor unterstützt
+* Sensorwerte 'Rauch', 'Batterie-Status', 'Aktueller Sollwert', 'Schließer' und 'HomePilot-Zone' werden unterstützt
+
 ### Version 1.5 ###
 * Connect-Aktor und RolloTube unterstützt
 
