@@ -20,6 +20,21 @@ abstract class HPDevice extends IPSModule {
     IPS_SetVariableProfileAssociation('CommandCtrl.HP', 100, '100%', '', 0x000000);
     IPS_SetVariableProfileIcon('CommandCtrl.HP', 'Shutter');
 	
+     if (!IPS_VariableProfileExists('TemperaturCtrl.HP')) 
+          IPS_CreateVariableProfile('TemperaturCtrl.HP', 2);
+     IPS_SetVariableProfileValues('TemperaturCtrl.HP', 4, 40, 0.1 );
+     IPS_SetVariableProfileDigits('TemperaturCtrl.HP', 1 );
+     IPS_SetVariableProfileIcon('TemperaturCtrl.HP', 'Temperature');
+     IPS_SetVariableProfileText('TemperaturCtrl.HP','', '°C' );
+
+     if (!IPS_VariableProfileExists('SmokeSensor.HP')) 
+		 IPS_CreateVariableProfile('SmokeSensor.HP', 0);
+	 
+    IPS_SetVariableProfileAssociation('SmokeSensor.HP', 0,  'nicht erkannt','', 0x000000);
+    IPS_SetVariableProfileAssociation('SmokeSensor.HP', 1,  'erkannt',  	'Flame', 0xFF0000);
+	IPS_SetVariableProfileIcon('SmokeSensor.HP', 'Fog');
+
+	
     parent::Create();
   }
 
@@ -409,7 +424,7 @@ abstract class HPDevice extends IPSModule {
 						$smoke = ($sValue != "Nicht erkannt");
 						
 						if (!$valuesId = @$this->GetIDForIdent("SMOKE")) {
-							$valuesId = $this->RegisterVariableBoolean("SMOKE", "Rauch", "~Alert", 1);
+							$valuesId = $this->RegisterVariableBoolean("SMOKE", "Rauch", "SmokeSensor.HP", 1);
 							SetValueBoolean( $valuesId, $smoke );
 						}
 						else if( GetValueBoolean( $valuesId ) != $smoke ){
@@ -425,7 +440,7 @@ abstract class HPDevice extends IPSModule {
 							$valuesId = $this->RegisterVariableInteger("BATTERIE", "Batterie Status", "~Intensity.100", 2);
 							SetValueInteger( $valuesId, $batterie );
 						}
-						else if( GetValueFloat( $valuesId ) != $batterie || $this->needsRefresh($valuesId,10*60) ){
+						else if( GetValueInteger( $valuesId ) != $batterie || $this->needsRefresh($valuesId,10*60) ){
 							SetValueInteger( $valuesId, $batterie );
 						}
 					break;
@@ -435,7 +450,7 @@ abstract class HPDevice extends IPSModule {
 						$temperature = floatval(str_replace( ',','.',$sValue));
 						
 						if (!$valuesId = @$this->GetIDForIdent("TEMPERATUR_NOM")) {
-							$valuesId = $this->RegisterVariableFloat("TEMPERATUR_NOM", "Solltemperatur", "~Temperature", 5);
+							$valuesId = $this->RegisterVariableFloat("TEMPERATUR_NOM", "Solltemperatur", "TemperaturCtrl.HP", 5);
 							SetValueFloat( $valuesId, $temperature );
 						}
 						else if( GetValueFloat( $valuesId ) != $temperature || $this->needsRefresh($valuesId,10*60) ){
@@ -690,6 +705,7 @@ abstract class HPDevice extends IPSModule {
 		case 8: //  "RolloTube"
 			return $this->SetValue("SHUTTER", $setVal);
 	}
+	return false;
 	  
   }
 

@@ -29,6 +29,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 1.7 ###
+* kleiner Fehlerkorrekturen
+
 ### Version 1.6 ###
 * Universal-Aktor unterstützt
 * Sensorwerte 'Rauch', 'Batterie-Status', 'Aktueller Sollwert', 'Schließer' und 'HomePilot-Zone' werden unterstützt
@@ -73,18 +76,18 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 	// Mögliche Keys (ja nach Typ unterschiedlich):
 	// _______________ Schaltaktor _________________
-	// SWITCH       -> true oder false für an/aus
+	// SWITCH         -> true oder false für an/aus
 	//
 	// _______________ RolloTron / Rohraktor _______
-	// SHUTTER      -> true oder false für geschlossen/offens
-	// SHUTTERPOS   -> Werte für eine Rollladenposition zwichen 0 und 100%
-	// SHUTTERCMD   -> Werte für eine Rollladenposition zwichen 0 und 100% in 25% Schritten
-	// AUTOMATIC    -> true oder false für Automatik an/aus
+	// SHUTTER        -> true oder false für geschlossen/offens
+	// SHUTTERPOS     -> Werte für eine Rollladenposition zwichen 0 und 100%
+	// SHUTTERCMD     -> Werte für eine Rollladenposition zwichen 0 und 100% in 25% Schritten
+	// AUTOMATIC      -> true oder false für Automatik an/aus
 	//
 	// _______________ Dimmer ______________________
-	// DIMMERSTATE  -> true oder false für an/aus
-	// DIMMERPOS    -> Werte für eine Helligkeit zwichen 0 und 100%
-	// DIMMERCMD    -> Werte für eine Dimmerposition zwichen 0 und 100% in 25% Schritten
+	// DIMMERSTATE    -> true oder false für an/aus
+	// DIMMERPOS      -> Werte für eine Helligkeit zwichen 0 und 100%
+	// DIMMERCMD      -> Werte für eine Dimmerposition zwichen 0 und 100% in 25% Schritten
 	//
 
 	// Liefert einen Knotenparameter je nach Parameter (s.o.)
@@ -92,14 +95,20 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 			
 	// Mögliche Keys (ja nach Typ unterschiedlich):
 	// _______________ Für Sensoren ________________
-	// SUN          -> Sonne erkannt / nicht erkannt
-	// RAIN         -> Regen erkannt / nicht erkannt
-	// LUX          -> Lichtwert in Lux
-	// WIND         -> Windgweschwindigkeit in m/s
-	// TEMPERATURE  -> Temperatur in Grad C
-	// SUNHEIGHT    -> Sonnehöhe in Grad
-	// SUNDIRECTION -> Sonnenrichtung in Grad
-	// ACTTIME      -> Aktualisierungszeit als string
+	// SUN            -> Sonne erkannt / nicht erkannt
+	// RAIN           -> Regen erkannt / nicht erkannt
+	// SMOKE          -> Rauch erkannt / nicht erkannt
+	// MOTION         -> Bewegung erkannt / nicht erkannt
+	// BATTERIE       -> Batteriestatus von 0-100%
+	// TEMPERATUR_NOM -> aktuelle Solltemperatur in °C
+	// HP_ZONE        -> HompilotZone abwesend / anwesend
+	// SHUTTER        -> Schliesser offen / geschlossen
+	// LUX            -> Lichtwert in Lux
+	// WIND           -> Windgweschwindigkeit in m/s
+	// TEMPERATURE    -> Temperatur in Grad C
+	// SUNHEIGHT      -> Sonnehöhe in Grad
+	// SUNDIRECTION   -> Sonnenrichtung in Grad
+	// ACTTIME        -> Aktualisierungszeit als string
 	
 	// Liefert einen Sensorparameter je nach Parameter (s.o.)
 	HPSensor_GetValue(int $lightId, string $key);
