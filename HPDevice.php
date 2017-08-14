@@ -30,7 +30,7 @@ abstract class HPDevice extends IPSModule {
      if (!IPS_VariableProfileExists('SmokeSensor.HP')) 
 		 IPS_CreateVariableProfile('SmokeSensor.HP', 0);
 	 
-    IPS_SetVariableProfileAssociation('SmokeSensor.HP', 0,  'nicht erkannt','', 0xFFFFFF);
+    IPS_SetVariableProfileAssociation('SmokeSensor.HP', 0,  'nicht erkannt','', -1 );
     IPS_SetVariableProfileAssociation('SmokeSensor.HP', 1,  'erkannt',  	'Flame', 0xFF0000);
 	IPS_SetVariableProfileIcon('SmokeSensor.HP', 'Fog');
 
