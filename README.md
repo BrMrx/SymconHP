@@ -124,7 +124,7 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	HP_GetState(int $lightId)
 	
 	// Position setzen (Werte zwichen 0 - 100%)
-	// Solltempa+eratur vorgeben (4-40°C)
+	// Solltemperatur vorgeben (4-40°C)
 	HP_SetPosition(int $lightId, float $value)
 	HP_GetPosition(int $lightId)
 	
