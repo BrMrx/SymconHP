@@ -109,8 +109,9 @@ abstract class HPDevice extends IPSModule {
 			$dirty = true;
 		  }
 
-
+		  // der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
 		  $typeList = array (
+						10 => "Raumthermostat",
 						0 => "Schaltaktor",
 						1 => "RolloTron",
 						2 => "Dimmer",
@@ -226,6 +227,19 @@ abstract class HPDevice extends IPSModule {
 					else
 						IPS_SetIcon($valuesId, 'Execute');
 				}
+			break;
+
+			case 10: //  "Raumthermostat"
+				$desttemperatur = $position / 10.;
+				if (!$valuesId = @$this->GetIDForIdent("DESTTEMP")) {
+					$valuesId = $this->RegisterVariableFloat("DESTTEMP", "Solltemperatur", "TemperaturCtrl.HP", 1);
+			        $this->EnableAction("DESTTEMP");
+					SetValueFloat( $valuesId, $desttemperatur );
+				}
+				else if( GetValueFloat( $valuesId ) != $desttemperatur ){
+					SetValueFloat( $valuesId, $desttemperatur );
+				}
+
 			break;
 			
 			case 2: //  "Dimmer"
@@ -528,6 +542,10 @@ abstract class HPDevice extends IPSModule {
 		else
 			$NewValue = 0;
         break;
+	
+	  case 'DESTTEMP':
+		$NewValue = floatval($strValue);
+        break;
 		
       case 'SHUTTERPOS':
       case 'DIMMERPOS':
@@ -658,6 +676,15 @@ abstract class HPDevice extends IPSModule {
 		}
 		break;
 		
+	  case 'DESTTEMP':
+		$value = intval($value * 10);
+		if( $value < 40 )
+			$value = 40;
+		if( $value > 400 )
+			$value = 400;
+		 $path= "cid=9&did=$uniqueId&goto=$value&command=1";
+         break;
+	  
       case 'SHUTTERPOS':
       case 'DIMMERPOS':
 		 $value = $this->LinearizeToDevice($value);
@@ -737,24 +764,39 @@ abstract class HPDevice extends IPSModule {
   }
 
  /*
-   * HP_SetPosition(integer $id, integer $value)
+   * HP_SetPosition(integer $id, float $value)
    */
-  public function SetPosition(int $value) {
+  public function SetPosition(float $value) {
 	$nodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
 	
-	if( $value < 0 )
-		$value = 0;
-	if( $value > 100 )
-		$value = 100;
+	$lMinVal=0;
+	$lMaxVal=100;
+	
+	switch( $nodeFeatures )
+	{
+		case 10:
+			$lMinVal=4;
+			$lMaxVal=40;
+			break;
+	}
+	
+	
+	if( $value < $lMinVal )
+		$value = $lMinVal;
+	if( $value > $lMaxVal )
+		$value = $lMaxVal;
 	
 	switch( $nodeFeatures )
 	{
 		case 0: //  "Schaltaktor"
 		case 9: //  Universal-Aktor
-			return $this->SetValue("SWITCH", $value > 0);
+			return $this->SetValue("SWITCH", intval($value) > 0);
 
 		case 2: //  "Dimmer"
-			return $this->SetValue("DIMMERPOS", $value);
+			return $this->SetValue("DIMMERPOS", intval($value));
+
+		case 10: //  "Raumthermostat"
+			return $this->SetValue("DESTTEMP", $value);
 			
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"
@@ -763,7 +805,7 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
-			return $this->SetValue("SHUTTERPOS", $value);
+			return $this->SetValue("SHUTTERPOS", intval($value) );
 	}
 	  
   }
@@ -860,6 +902,9 @@ abstract class HPDevice extends IPSModule {
 
 		case 2: //  "Dimmer"
 			return $this->GetValue("DIMMERPOS");
+
+		case 10: //  "Raumthermostat"
+			return $this->GetValue("DESTTEMP");
 			
 		case 1: //  "RolloTron"
 		case 3: //  "Rohrmotoraktor Umweltsensor"

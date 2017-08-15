@@ -36,7 +36,8 @@
         { "value": 6, "label": "Garagentorantrieb" },
         { "value": 7, "label": "Connect-Aktor" },
         { "value": 8, "label": "RolloTube" },
-        { "value": 9, "label": "Universal-Aktor" }
+        { "value": 9, "label": "Universal-Aktor" },
+        { "value": 10, "label": "Raumthermostat" }
       ]
     }, {
       "type": "ValidationTextBox",

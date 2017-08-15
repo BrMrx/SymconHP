@@ -29,6 +29,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 1.8 ###
+* Raumthermostat wird als Aktor unterstützt
+
 ### Version 1.7 ###
 * kleiner Fehlerkorrekturen
 
@@ -89,6 +92,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	// DIMMERPOS      -> Werte für eine Helligkeit zwichen 0 und 100%
 	// DIMMERCMD      -> Werte für eine Dimmerposition zwichen 0 und 100% in 25% Schritten
 	//
+	// _______________ Raumthermostat ______________
+	// DESTTEMP      -> Werte für die Raumthermostat Solltemperatur zwichen 4°C und 40°C
+	//
 
 	// Liefert einen Knotenparameter je nach Parameter (s.o.)
 	HP_GetValue(int $lightId, string $key);
@@ -118,7 +124,8 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	HP_GetState(int $lightId)
 	
 	// Position setzen (Werte zwichen 0 - 100%)
-	HP_SetPosition(int $lightId, int $value)
+	// Solltempa+eratur vorgeben (4-40°C)
+	HP_SetPosition(int $lightId, float $value)
 	HP_GetPosition(int $lightId)
 	
 	// Automatik Ein/Ausschalten
