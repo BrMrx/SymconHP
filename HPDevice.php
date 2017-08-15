@@ -22,7 +22,7 @@ abstract class HPDevice extends IPSModule {
 	
      if (!IPS_VariableProfileExists('TemperaturCtrl.HP')) 
           IPS_CreateVariableProfile('TemperaturCtrl.HP', 2);
-     IPS_SetVariableProfileValues('TemperaturCtrl.HP', 4, 40, 0.1 );
+     IPS_SetVariableProfileValues('TemperaturCtrl.HP', 4, 40, 0.5 );
      IPS_SetVariableProfileDigits('TemperaturCtrl.HP', 1 );
      IPS_SetVariableProfileIcon('TemperaturCtrl.HP', 'Temperature');
      IPS_SetVariableProfileText('TemperaturCtrl.HP','', '°C' );
@@ -678,6 +678,8 @@ abstract class HPDevice extends IPSModule {
 		
 	  case 'DESTTEMP':
 		$value = intval($value * 10);
+		// auf 0.5er Schritte runden
+		$value = intval($value /5) *5;
 		if( $value < 40 )
 			$value = 40;
 		if( $value > 400 )
