@@ -111,7 +111,8 @@ abstract class HPDevice extends IPSModule {
 
 		  // der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
 		  $typeList = array (
-						10 => "Raumthermostat",
+		  				11 => "DuoFern Raumthermostat",
+						10 => "Schaltaktor DuoFern Raumthermostat",
 						0 => "Schaltaktor",
 						1 => "RolloTron",
 						2 => "Dimmer",
@@ -162,6 +163,7 @@ abstract class HPDevice extends IPSModule {
 		{
 			case 0: //  "Schaltaktor"
 			case 9: //  Universal-Aktor
+			case 11: //  Raumthermostat Relais
 				$switch = ($position != 0);
 				if (!$valuesId = @$this->GetIDForIdent("SWITCH")) {
 					$valuesId = $this->RegisterVariableBoolean("SWITCH", "Schalter", "~Switch", 1);
@@ -720,6 +722,7 @@ abstract class HPDevice extends IPSModule {
 	{
 		case 0: //  "Schaltaktor"
 		case 9: //  Universal-Aktor
+		case 11: //  Raumthermostat Relais
 			return $this->SetValue("SWITCH", $setVal);
 
 		case 2: //  "Dimmer"
@@ -748,6 +751,7 @@ abstract class HPDevice extends IPSModule {
 	{
 		case 0: //  "Schaltaktor"
 		case 9: //  Universal-Aktor
+		case 11: //  Raumthermostat Relais
 			return $this->GetValue("SWITCH");
 
 		case 2: //  "Dimmer"
@@ -792,6 +796,7 @@ abstract class HPDevice extends IPSModule {
 	{
 		case 0: //  "Schaltaktor"
 		case 9: //  Universal-Aktor
+		case 11: //  Raumthermostat Relais
 			return $this->SetValue("SWITCH", intval($value) > 0);
 
 		case 2: //  "Dimmer"
@@ -822,6 +827,7 @@ abstract class HPDevice extends IPSModule {
 	{
 		case 0: //  "Schaltaktor"
 		case 9: //  Universal-Aktor
+		case 11: //  Raumthermostat Relais
 			return $this->SetValue("SWITCH", true);
 
 		case 2: //  "Dimmer"
@@ -871,6 +877,7 @@ abstract class HPDevice extends IPSModule {
 	{
 		case 0: //  "Schaltaktor"
 		case 9: //  Universal-Aktor
+		case 11: //  Raumthermostat Relais
 			return $this->SetValue("SWITCH", false);
 
 		case 2: //  "Dimmer"
@@ -897,6 +904,7 @@ abstract class HPDevice extends IPSModule {
 	{
 		case 0: //  "Schaltaktor"
 		case 9: //  Universal-Aktor
+		case 11: //  Raumthermostat Relais
 			if( $this->GetValue("SWITCH") > 0 )
 				return 1;
 			else

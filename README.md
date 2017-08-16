@@ -29,6 +29,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 1.9 ###
+* Raumthermostat Relais und Sollwert werden unterschieden
+
 ### Version 1.8 ###
 * Raumthermostat wird als Aktor unterstützt
 
