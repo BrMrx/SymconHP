@@ -111,8 +111,8 @@ abstract class HPDevice extends IPSModule {
 
 		  // der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
 		  $typeList = array (
-		  				11 => "DuoFern Raumthermostat",
-						10 => "Schaltaktor DuoFern Raumthermostat",
+		  				10 => "DuoFern Raumthermostat",
+						11 => "Schaltaktor DuoFern Raumthermostat",
 						0 => "Schaltaktor",
 						1 => "RolloTron",
 						2 => "Dimmer",
