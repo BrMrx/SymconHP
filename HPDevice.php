@@ -242,10 +242,9 @@ abstract class HPDevice extends IPSModule {
 					SetValueFloat( $valuesId, $desttemperatur );
 				}
 				
-				$lRelaisStatus = ($values['relaisstatus'] == 0);
+				$lRelaisStatus = ($values['relaisstatus'] != 0);
 				if (!$valuesId = @$this->GetIDForIdent("RELAISSTATE")) {
 					$valuesId = $this->RegisterVariableBoolean("RELAISSTATE", "Relaisstatus", "~Switch", 10);
-//					$this->EnableAction("RELAISSTATE");
 					SetValueBoolean( $valuesId, $lRelaisStatus );
 				}
 				else if( GetValueBoolean( $valuesId ) != $lRelaisStatus ){
