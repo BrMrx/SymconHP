@@ -29,6 +29,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 1.10 ###
+* Raumthermostat Relaisstatus wird ausgelesen
+
 ### Version 1.9 ###
 * Raumthermostat Relais und Sollwert werden unterschieden
 
@@ -97,6 +100,7 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 	//
 	// _______________ Raumthermostat ______________
 	// DESTTEMP      -> Werte für die Raumthermostat Solltemperatur zwichen 4°C und 40°C
+	// RELAISSTATE   -> Relaisstatus des Schaltrelais true oder false für an/aus
 	//
 
 	// Liefert einen Knotenparameter je nach Parameter (s.o.)
