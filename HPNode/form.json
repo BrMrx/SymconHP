@@ -38,7 +38,8 @@
         { "value": 8, "label": "RolloTube" },
         { "value": 9, "label": "Universal-Aktor" },
         { "value": 10, "label": "Raumthermostat" },
-        { "value": 11, "label": "Raumthermostat Relais" }
+        { "value": 11, "label": "Raumthermostat Relais" },
+        { "value": 12, "label": "Troll Comfort" }
       ]
     }, {
       "type": "ValidationTextBox",

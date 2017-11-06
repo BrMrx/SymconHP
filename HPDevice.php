@@ -122,7 +122,8 @@ abstract class HPDevice extends IPSModule {
 						6 => "SX5",
 						7 => "Connect-Aktor",
 						8 => "RolloTube",
-						9 => "Universal-Aktor"
+						9 => "Universal-Aktor",
+						12 => "Troll Comfort"
 						);
 		
 		 $nodeFeatures = 0;
@@ -182,6 +183,7 @@ abstract class HPDevice extends IPSModule {
 			case 6: //  "SX5 Garagentor Stellmotor"
 			case 7: //  "Connect-Aktor"
 			case 8: //  "RolloTube"
+			case 12: //  "Troll Comfort"
 				$shutter = ($position != 0);
 				if (!$valuesId = @$this->GetIDForIdent("SHUTTER")) {
 					$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Zustand", "~ShutterMove", 1);
@@ -744,6 +746,7 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
 			return $this->SetValue("SHUTTER", $setVal);
 	}
 	return false;
@@ -773,6 +776,7 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
 			return $this->GetValue("SHUTTER" );
 	}
 	return false;
@@ -821,6 +825,7 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
 			return $this->SetValue("SHUTTERPOS", intval($value) );
 	}
 	  
@@ -849,6 +854,7 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
 			return $this->SetValue("SHUTTERCMD", -3);
 	}
 	  
@@ -899,6 +905,7 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
 			return $this->SetValue("SHUTTERCMD", -1);
 	}
   }
@@ -932,6 +939,7 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
 			return $this->GetValue("SHUTTERPOS");
 	}
 	return 0;
