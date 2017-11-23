@@ -39,7 +39,8 @@
         { "value": 9, "label": "Universal-Aktor" },
         { "value": 10, "label": "Raumthermostat" },
         { "value": 11, "label": "Raumthermostat Relais" },
-        { "value": 12, "label": "Troll Comfort" }
+        { "value": 12, "label": "Troll Comfort" },
+        { "value": 13, "label": "Troll Basis" }
       ]
     }, {
       "type": "ValidationTextBox",
