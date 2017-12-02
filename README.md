@@ -29,9 +29,12 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 1.13 ###
+* Troll Basis und Troll Comfort wurden in einigen Funktionen nicht korrekt unterstützt
+
 ### Version 1.12 ###
 * Troll Basis wird unterstützt
-* 
+ 
 ### Version 1.11 ###
 * Troll Comfort wird unterstützt
 
