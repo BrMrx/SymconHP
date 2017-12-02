@@ -884,6 +884,8 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
+		case 13: //  "Troll Basis"
 			return $this->SetValue("SHUTTERCMD", -2);
 	}
   }
@@ -972,6 +974,8 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
+		case 13: //  "Troll Basis"
 			return $this->SetValue("AUTOMATIC", $setVal);
 	}
 	  
@@ -992,6 +996,8 @@ abstract class HPDevice extends IPSModule {
 		case 6: //  "SX5 Garagentor Stellmotor"
 		case 7: //  "Connect-Aktor"
 		case 8: //  "RolloTube"
+		case 12: //  "Troll Comfort"
+		case 13: //  "Troll Basis"
 			return $this->GetValue("AUTOMATIC" );
 	}
 	return false;
