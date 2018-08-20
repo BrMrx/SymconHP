@@ -29,6 +29,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 2.00 ###
+* Korrekturen zur Unterstützung von IP Symcon 5. Damit ist das modul nicht mehr zu Version 4 kompatibel!!
+
 ### Version 1.13 ###
 * Troll Basis und Troll Comfort wurden in einigen Funktionen nicht korrekt unterstützt
 
