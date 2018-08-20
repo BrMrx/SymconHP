@@ -621,7 +621,7 @@ abstract class HPDevice extends IPSModule {
         bekommt man eine Deviceliste mit den Statis der Aktoren
 
    */
-  protected function SetValue(string $key, $value) {
+  protected function SetValue( $key, $value) {
  	
 	$uniqueId = $this->ReadPropertyString("UniqueId");
 	if ( $uniqueId == '') {
