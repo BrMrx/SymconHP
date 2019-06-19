@@ -25,9 +25,12 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 ## Voraussetzung
 
 * Rademacher Homepilot 1 oder 2.
-* ab Symcon Version 4
+* ab Symcon Version 5
 
 ## Änderungen
+
+### Version 2.01 ###
+* Kommafehler behoben, die Modulkonfiguration konnte nicht mehr geladen werden
 
 ### Version 2.00 ###
 * Korrekturen zur Unterstützung von IP Symcon 5. Damit ist das modul nicht mehr zu Version 4 kompatibel!!

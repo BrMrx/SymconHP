@@ -3,7 +3,7 @@
     { "name": "Host", "type": "ValidationTextBox", "caption": "Host" },
     { "name": "UpdateInterval", "type": "IntervalBox", "caption": "Sekunden" },
     { "name": "HomePilotCategory", "type": "SelectCategory", "caption": "Homepilot-Knoten" },
-    { "name": "HomePilotSensorCategory", "type": "SelectCategory", "caption": "Homepilot-Sensoren" },
+    { "name": "HomePilotSensorCategory", "type": "SelectCategory", "caption": "Homepilot-Sensoren" }
   ],
   "actions": [
     { "type": "Button", "label": "Geräte abgleichen", "onClick": "HP_SyncDevices($id); echo 'Fertig';" },
