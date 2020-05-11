@@ -1,6 +1,12 @@
 {
   "elements": [
     { "name": "Host", "type": "ValidationTextBox", "caption": "Host" },
+    { "name": "HomePilotVersion", "type": "Select", "caption": "Homepilot Version",
+		"options": [
+				{ "caption": "Version 3 und 4", "value": 4 },
+				{ "caption": "Version 5", "value": 5 }
+    ]
+	},
     { "name": "UpdateInterval", "type": "IntervalBox", "caption": "Sekunden" },
     { "name": "HomePilotCategory", "type": "SelectCategory", "caption": "Homepilot-Knoten" },
     { "name": "HomePilotSensorCategory", "type": "SelectCategory", "caption": "Homepilot-Sensoren" }

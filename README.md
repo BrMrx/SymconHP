@@ -9,6 +9,7 @@ Die Einrichtung erfolgt über die Modulverwaltung von Symcon. Nach der Installat
 ## Einstellungen
 
 * **Host**  _Der Hostname bzw. die IP-Adresse des Homepiloten_
+* **Homepilot Version**  _Firmware Basisversion des Hompiloten 3&4 / 5_
 * **Interval**  _In welchem Abstand soll der Status abgeglichen werden_
 * **Homepilot-Knoten**  _In der ausgewählten Kategorie werden die Knoteninstanzen bereit gestellt_
 * **Homepilot-Sensoren**  _In der ausgewählten Kategorie werden die Sensorinstanzen bereit gestellt_
@@ -25,9 +26,13 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 ## Voraussetzung
 
 * Rademacher Homepilot 1 oder 2.
+* Firmwaregrundversion 3, 4, oder 5
 * ab Symcon Version 5
 
 ## Änderungen
+
+### Version 3.00 ###
+* Unterstützung des neuen Homepiloten Api ab Firmwareversion 5.0 Die genutzte Version muss in der Bridge als Parameter eingestellt werden.
 
 ### Version 2.01 ###
 * Kommafehler behoben, die Modulkonfiguration konnte nicht mehr geladen werden

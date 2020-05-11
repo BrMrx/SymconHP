@@ -3,12 +3,14 @@
 class HPBridge extends IPSModule {
 
   private $Host = "";
+  private $HomePilotVersion = 0;
   private $HomePilotCategory = 0;
   private $HomePilotSensorCategory = 0;
 
   public function Create() {
     parent::Create();
     $this->RegisterPropertyString("Host", "");
+    $this->RegisterPropertyInteger("HomePilotVersion", 4);
     $this->RegisterPropertyInteger("HomePilotCategory", 0);
     $this->RegisterPropertyInteger("HomePilotSensorCategory", 0);
     $this->RegisterPropertyInteger("UpdateInterval", 5);
@@ -16,7 +18,8 @@ class HPBridge extends IPSModule {
 
   public function ApplyChanges() {
     $this->Host = "";
-    $this->HomePilotCategory = 0;
+    $this->Host = "";
+    $this->HomePilotVersion = 4;
     $this->HomePilotSensorCategory = 0;
 
     parent::ApplyChanges();
@@ -57,7 +60,8 @@ class HPBridge extends IPSModule {
 
   private function ValidateConfiguration() {
     if ($this->ReadPropertyInteger('HomePilotCategory') == 0 ||  
-		$this->ReadPropertyInteger('HomePilotSensorCategory') == 0 || 
+		$this->ReadPropertyInteger('HomePilotSensorCategory') == 0 ||
+ 		$this->ReadPropertyInteger('HomePilotVersion') == 0 || 
 		$this->ReadPropertyString('Host') == '' ) {
       $this->SetStatus(104);
     } else {
@@ -86,6 +90,16 @@ class HPBridge extends IPSModule {
     }
     return $this->Host;
   }
+  private function GetHomePilotVersion() {
+    if($this->HomePilotVersion == '') {
+    	$this->HomePilotVersion = $this->ReadPropertyInteger('HomePilotVersion');
+    }
+    return $this->HomePilotVersion;
+  }
+  
+  public function ProtocolVersion() {
+		return $this->GetHomePilotVersion();
+  }
 
   /*
   Direkten Request an den Homepiloten schicken
@@ -95,59 +109,171 @@ class HPBridge extends IPSModule {
   */
   public function Request( string $path ) {
     $host = $this->GetHost();
+	$lProtocolVersion = $this->ProtocolVersion();
  
- 
-    $client = curl_init();
-    curl_setopt($client, CURLOPT_URL, "http://$host/deviceajax.do");
-    curl_setopt($client, CURLOPT_USERAGENT, "SymconHP");
-	curl_setopt($client, CURLOPT_POSTFIELDS, $path );
-	
-    curl_setopt($client, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_setopt($client, CURLOPT_TIMEOUT, 5);
-    curl_setopt($client, CURLOPT_RETURNTRANSFER, 1);
-	
-    $result = curl_exec($client);
-    $status = curl_getinfo($client, CURLINFO_HTTP_CODE);
-    curl_close($client);
+	switch( $lProtocolVersion )
+	{
+		//----------------------- Hompilot Protokollversion 3 und 4 ---------------------------------------
+	case 4:
+		{
+			IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Pfad $path" );
+	 
+		$client = curl_init();
+		curl_setopt($client, CURLOPT_URL, "http://$host/deviceajax.do");
+		curl_setopt($client, CURLOPT_USERAGENT, "SymconHP");
+		curl_setopt($client, CURLOPT_POSTFIELDS, $path );
+		
+		curl_setopt($client, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($client, CURLOPT_TIMEOUT, 5);
+		curl_setopt($client, CURLOPT_RETURNTRANSFER, 1);
+		
+		$result = curl_exec($client);
+		$status = curl_getinfo($client, CURLINFO_HTTP_CODE);
+		curl_close($client);
 
-	
-    if ($status == '0') {
-		$this->SetStatus(203);
-		return false;
-    } elseif ($status != '200') {
-		$this->SetStatus(201);
-		return false;
-    } else {
-		$result = json_decode($result);
-	  
-	    if( $result->status == 'uisuccess' ) {
-//			IPS_LogMessage("SymconHP", "erfolgreich !!");
-			return true;
-		}
-	    if( $result->status == 'uierror' ) {
-			IPS_LogMessage("SymconHP", "Fehler !!".$result->message );
+		
+		if ($status == '0') {
+			$this->SetStatus(203);
 			return false;
-		}
-
-		if ($result->status != 'ok') {
- 			$this->SetStatus(201);
+		} elseif ($status != '200') {
+			$this->SetStatus(201);
 			return false;
-		}
+		} else {
+			$result = json_decode($result);
+		  
+			if( $result->status == 'uisuccess' ) {
+	//			IPS_LogMessage("SymconHP", "erfolgreich !!");
+				return true;
+			}
+			if( $result->status == 'uierror' ) {
+				IPS_LogMessage("SymconHP", "Fehler !!".$result->message );
+				return false;
+			}
 
-		if( property_exists( $result, "devices" ) ) {
-			$result = $result->devices;
-		} elseif( property_exists( $result, "meters" ) ) {
-			$result = $result->meters;
-		} elseif( property_exists( $result, "data" ) ) {
-			$result = $result->data;
-		} elseif( property_exists( $result, "device" ) ) {
-			$result = $result->device;
-		}else {
-			$result = null;
-	    }
-		$this->SetStatus(102);
-		return $result;
+			if ($result->status != 'ok') {
+				$this->SetStatus(201);
+				return false;
+			}
+
+			if( property_exists( $result, "devices" ) ) {
+				$result = $result->devices;
+			} elseif( property_exists( $result, "meters" ) ) {
+				$result = $result->meters;
+			} elseif( property_exists( $result, "data" ) ) {
+				$result = $result->data;
+			} elseif( property_exists( $result, "device" ) ) {
+				$result = $result->device;
+			}else {
+				$result = null;
+			}
+			$this->SetStatus(102);
+			return $result;
+		}
+		}
+		break;
+		// ----------- Homepilot Protocolversion 5 ------------------------------------
+		case 5: 
+		{
+			$lSingleNodeDataRequst = false;
+			$lParArray = explode('=',  $path );
+			
+			if( $lParArray[1] > 1 )
+			{
+				if( $lParArray[0] == "command" )
+				{
+					$lCommandData = $lParArray[2];
+					$url = "http://$host/devices/".$lParArray[1];
+				}
+				else
+					$url = "http://$host/v4/devices/".$lParArray[1];
+				$lSingleNodeDataRequst = true;
+			}
+			else
+			{
+				$url = "http://$host/v4/devices";
+				if( $lParArray[0] == "meters" )
+					$url .= "?devtype=Sensor";
+			}
+
+			$client = curl_init();
+			curl_setopt($client, CURLOPT_URL, $url);
+			curl_setopt($client, CURLOPT_USERAGENT, "SymconHP");
+			if( isset($lCommandData) )
+			{
+				curl_setopt($client, CURLOPT_HTTPHEADER, array(
+						'Content-Type: application/json;charset=utf-8',
+						'Content-Length: ' . strlen($lCommandData))
+					);
+				curl_setopt($client, CURLOPT_CUSTOMREQUEST, 'PUT');
+				curl_setopt($client, CURLOPT_POSTFIELDS,$lCommandData);
+			
+//				IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData" );
+			}
+			else
+			{
+//				IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url" );
+			}
+			
+			curl_setopt($client, CURLOPT_CONNECTTIMEOUT, 5);
+			curl_setopt($client, CURLOPT_TIMEOUT, 5);
+			curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
+    
+			$result = curl_exec($client);
+			$status = curl_getinfo($client, CURLINFO_RESPONSE_CODE);
+			curl_close($client);
+
+			if ($status != '200') {
+				IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url, Error $status" );
+				return false;
+			} else {
+        		$result = json_decode($result);
+                
+				$retVal=null;
+
+				if( $lSingleNodeDataRequst )
+				{
+					if( property_exists($result,"payload") && 
+					    property_exists($result->payload,"device") &&
+						property_exists($result->payload->device,"capabilities")	)
+					{
+						$retVal =$result->payload->device->capabilities;
+					}
+					else
+					{
+						$retVal = null;
+					}
+						
+				}	
+				else if( property_exists($result,"devices"))
+				{
+					$retVal =$result->devices;
+				}
+				else if( property_exists($result,"device"))
+				{
+					$retVal[0] = $result->device;
+				}
+				else if( property_exists($result,"meters"))
+				{
+					$retVal =$result->meters;
+				}
+				else if( property_exists($result,"transmitters"))
+				{
+					$retVal =$result->transmitters;         
+				}
+				else if( property_exists($result,"payload")  )
+				{
+					echo "payload gefunden \n";
+					$retVal =$result->payload;
+				}
+
+
+				$this->SetStatus(102);
+				return $retVal;
+			}
+		}
+		break;
 	}
+	return false;
   }
 
     /*
@@ -246,19 +372,33 @@ class HPBridge extends IPSModule {
 		  
           IPS_ApplyChanges($sensorId);
 		  
-		  $dataRequest = "meter=$uniqueId";
+		  if( $this->ProtocolVersion() == 4 )
+		  {
+			$dataRequest = "meter=$uniqueId";
 		  
-		  // nun noch die Daten abfragen
-		   $data = $this->Request($dataRequest );
+			// nun noch die Daten abfragen
+			$data = $this->Request($dataRequest );
 		   
-		   if( $data ) {
+			if( $data ) {
 			   // Ergänze Daten
 			   $sensor->data = $data;
-		   }
+			}
+		  }
+		  else
+		  {
+			  $sensor->readings->timestamp = date("d.m.Y H:i:s",$sensor->timestamp);
+			  $sensor->data = $sensor->readings;
+		  }
 
-		  
-		  // Daten zuordnen, Variablen anlegen
-		  HPSensor_ApplyJsonData($sensorId, json_encode($sensor));
+
+		   $lObjInfo = IPS_GetInstance($sensorId);
+		   
+		   switch( $lObjInfo['ModuleInfo']['ModuleName'] )
+		   {
+			case 'HPSensor':
+				HPSensor_ApplyJsonData($sensorId,json_encode($sensor));
+				break;
+		   }
         }
       }
 	  
@@ -285,23 +425,42 @@ class HPBridge extends IPSModule {
       }
     }
 	$sensors = $this->Request('meters=1');
-    if ($sensors) {
+
+   if ($sensors) {
       foreach ($sensors as $sId => $sensor) {
         $uniqueId = (string)$sensor->did;
         $sensorId = $this->GetDeviceByUniqueId($uniqueId);
         if($sensorId > 0)
 		{
+			
+		  if( $this->ProtocolVersion() == 4 )
+		  {
 			$dataRequest = "meter=$uniqueId";
 		  
- 			// nun noch die Daten abfragen
+			// nun noch die Daten abfragen
 			$data = $this->Request($dataRequest );
 		   
-		   if( $data ) {
+			if( $data ) {
 			   // Ergänze Daten
 			   $sensor->data = $data;
+			}
+		  }
+		  else
+		  {
+			  $sensor->readings->timestamp = date("d.m.Y H:i:s",$sensor->timestamp);
+		      $sensor->data = $sensor->readings;
+
+		  }
+
+			 
+		   $lObjInfo = IPS_GetInstance($sensorId);
+		   
+		   switch( $lObjInfo['ModuleInfo']['ModuleName'] )
+		   {
+			case 'HPSensor':
+				HPSensor_ApplyJsonData($sensorId,json_encode($sensor));
+				break;
 		   }
-	
-			HPSensor_ApplyJsonData($sensorId, json_encode($sensor));
 		}			
       }
     }

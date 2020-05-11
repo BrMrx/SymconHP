@@ -52,6 +52,50 @@ abstract class HPDevice extends IPSModule {
     $this->ConnectParent("{51F4E4C4-1316-4E2F-A56E-3908FCE3F0C2}");
   }
 
+
+  private function GetProductInfoFromDeviceNumber( $ProductId )
+  {
+	  $typeList = array (
+		'35000864' 		=> array( 'DuoFern Connect Aktor 9477',              0 ),
+		'14234511' 		=> array( 'DuoFern RolloTronStandard',               1 ),
+		'35000662' 		=> array( 'DuoFern Rohrmotor Aktor',                 4 ),
+		'31500162' 		=> array( 'DuoFern Rohrmotorsteuerung',              5 ),
+		'36500172' 		=> array( 'DuoFern TrollBasis 5615',                 13),
+		'27601565' 		=> array( 'DuoFern Rohrmotor',                       5 ),
+		'45059071' 		=> array( 'RolloPort SX5 DuoFern RP-SX5DF-900N-3',   6 ),
+		'35000462' 		=> array( 'DuoFern Universal Dimmaktor',             2 ),
+		'35140462' 		=> array( 'DuoFern UniversalDimmer 9476',            2 ),
+		'36500572' 		=> array( 'Duofern Troll Comfort 5665',              12),
+		'32000064' 		=> array( 'DuoFern Umweltsensor',                    3 ),
+		'32000064_A' 	=> array( 'DuoFern Umweltsensor Aktor',              3 ),
+		'32000064_S' 	=> array( 'DuoFern Umweltsensor Sensor',             3 ),
+		'16234511' 		=> array( 'DuoFern RolloTron Comfort 1800/1805/1840',1 ),
+		'16234511_A' 	=> array( 'DuoFern RolloTron Comfort 1800/1805/1840',1 ),
+		'14236011' 		=> array( 'DuoFern RolloTron Pro Comfort 9800',      1 ),
+		'23602075' 		=> array( 'DuoFern S-Line-Motor-Typ-SLDM-10/16-PZ',  5 ),
+		'35002414' 		=> array( 'Z-Wave Steckdose',                        0 ),
+		'35000262' 		=> array( 'DuoFern 2 Kanal Aktor 9470-2',            0 ),
+		'35001164' 		=> array( 'DuoFern Zwischenstecker Schalten 9472',   0 ),
+		'32501972' 		=> array( 'DuoFern Mehrfachwandtaster 230V-9494-2',  0 ),
+		'32501772' 		=> array( 'DuoFern Bewegungsmelder 9484',            11),
+		'32501772_A'	=> array( 'DuoFern Bewegungsmelder 9484 Aktor',      11),
+		'32501812' 		=> array( 'DuoFern Raumthermostat 9485',             11),
+		'35003064' 		=> array( 'DuoFern Heizkörperstellantrieb 9433',     2 ),
+		'99999981' 		=> array( 'Philips Hue Weiße-Lampe',                 2 ),
+		'99999982' 		=> array( 'Philips Hue Ambiance-Spot',               2 ),
+		'99999983' 		=> array( 'Philips Hue RGB-Lampe',                   2 ),
+						);
+
+	 if( array_key_exists ( $ProductId,  $typeList  ) )
+		 return $typeList[$ProductId];
+	  
+	  
+	 IPS_LogMessage("SymconHP", "unbekannte deviceNumber '".$ProductId."' ");
+  
+	 return null;
+	  
+  }
+
   public function ApplyJsonData(string $jsonString) {
 	  
 	  $aData = json_decode($jsonString);
@@ -62,6 +106,7 @@ abstract class HPDevice extends IPSModule {
     $data = (array)$aData;
 	  
     $data = (array)$data;
+	
     $values = (array)@$data['statusesMap'];
 
     // Status
@@ -99,46 +144,66 @@ abstract class HPDevice extends IPSModule {
         $dirty = true;
     }
 
+
 	 $nodeFeatures = 0;
 
 	if (get_class($this) == 'HPNode')
 	{
-		  $productName = utf8_decode((string)$data['productName']);
+		$productName = "unknown ProductName for ";
+		$nodeFeatures = 0;
+		$lbDefault=true;
+
+		if( isset( $data['productName'] ) )
+		{
+			$productName = utf8_decode((string)$data['productName']);
+			
+			// der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
+			$typeList = array (
+							10 => "Schaltaktor DuoFern Raumthermostat",
+							11 => "DuoFern Raumthermostat",
+							0 => "Schaltaktor",
+							1 => "RolloTron",
+							2 => "Dimmer",
+							3 => "Rohrmotoraktor Umweltsensor",
+							4 => "Rohrmotoraktor",
+							5 => "Rohrmotor",
+							6 => "SX5",
+							7 => "Connect-Aktor",
+							8 => "RolloTube",
+							9 => "Universal-Aktor",
+							12 => "Troll Comfort",
+							13 => "Troll Basis"
+							);
+			
+			 foreach ($typeList as $typeId => $typeKeword) 
+			 {
+				$lPos = strpos($productName, $typeKeword );
+				if( $lPos === false )
+					continue;
+				
+				$nodeFeatures = $typeId;
+				$lbDefault=false;
+				break;
+			 }
+		  }
+		  else if( isset( $data['deviceNumber'] ) )
+		  {
+		  
+			  $lInfo = $this->GetProductInfoFromDeviceNumber($data['deviceNumber']);
+			  if( $lInfo )
+			  {
+				$productName = $lInfo[0];
+				$nodeFeatures = $lInfo[1];
+				$lbDefault=false;
+			  }			  
+		  }
+		  
+		  
 		  if (IPS_GetProperty($this->InstanceID, 'productName') != $productName) {
 			IPS_SetProperty($this->InstanceID, 'productName', $productName);
 			$dirty = true;
 		  }
 
-		  // der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
-		  $typeList = array (
-						10 => "Schaltaktor DuoFern Raumthermostat",
-		  				11 => "DuoFern Raumthermostat",
-						0 => "Schaltaktor",
-						1 => "RolloTron",
-						2 => "Dimmer",
-						3 => "Rohrmotoraktor Umweltsensor",
-						4 => "Rohrmotoraktor",
-						5 => "Rohrmotor",
-						6 => "SX5",
-						7 => "Connect-Aktor",
-						8 => "RolloTube",
-						9 => "Universal-Aktor",
-						12 => "Troll Comfort",
-						13 => "Troll Basis"
-						);
-		
-		 $nodeFeatures = 0;
-		 $lbDefault=true;
-		 foreach ($typeList as $typeId => $typeKeword) 
-		 {
-			$lPos = strpos($productName, $typeKeword );
-			if( $lPos === false )
-				continue;
-			
-			$nodeFeatures = $typeId;
-			$lbDefault=false;
-			break;
-		 }
 		 
 		 if( $lbDefault )
 		 {
@@ -292,13 +357,21 @@ abstract class HPDevice extends IPSModule {
 		}
 	}
 	
+	
 	// ------- hier werden die Sensordaten ausgewertet --------------------------
 	if( isset($data['data']) )
 	{
-		$dataValues = $data['data'];
+		$dataValues = array();
+		
+		if( isset($data['readings']) )
+			$dataValues[0] = (array)$data['data'];
+		else
+			$dataValues = $data['data'];
+		
 		
        foreach ($dataValues as $sensorValue) {
-		    $sensorArray = (array)$sensorValue;
+		   $sensorArray = (array)$sensorValue;
+
 
 		    foreach ($sensorArray as $sKey => $sValue) {
 
@@ -307,6 +380,23 @@ abstract class HPDevice extends IPSModule {
 					// Sonnensensor
 					case 'Sonne':
 						$sun = ($sValue != "Nicht erkannt");
+						
+						if (!$valuesId = @$this->GetIDForIdent("SUN")) {
+							$valuesId = $this->RegisterVariableBoolean("SUN", "Sonne", "~Presence", 1);
+							SetValueBoolean( $valuesId, $sun );
+							IPS_SetIcon($valuesId, 'Sun');
+
+						}
+						else if( GetValueBoolean( $valuesId ) != $sun ){
+							SetValueBoolean( $valuesId, $sun );
+							IPS_SetIcon($valuesId, 'Sun');
+
+						}
+					break;
+					
+					// Sonnensensor
+					case 'sun_detected':
+						$sun = ($sValue != "1");
 						
 						if (!$valuesId = @$this->GetIDForIdent("SUN")) {
 							$valuesId = $this->RegisterVariableBoolean("SUN", "Sonne", "~Presence", 1);
@@ -333,8 +423,22 @@ abstract class HPDevice extends IPSModule {
 							SetValueBoolean( $valuesId, $rain );
 						}
 					break;
+										// Regensensor
+					case 'rain_detected':
+						$rain = ($sValue == "1");
+						
+						if (!$valuesId = @$this->GetIDForIdent("RAIN")) {
+							$valuesId = $this->RegisterVariableBoolean("RAIN", "Regen", "~Raining", 1);
+							SetValueBoolean( $valuesId, $rain );
+						}
+						else if( GetValueBoolean( $valuesId ) != $rain ){
+							SetValueBoolean( $valuesId, $rain );
+						}
+					break;
+
 					// Lichtwert (Umweltsensor) min alle 10min aktualisieren
 					case 'Lichtwert':
+					case 'sun_brightness':
 						$lux = floatval(str_replace( ',','.',$sValue));
 						
 						if (!$valuesId = @$this->GetIDForIdent("LUX")) {
@@ -348,6 +452,7 @@ abstract class HPDevice extends IPSModule {
 
 					// Lichtwert (Umweltsensor)  min alle 10min aktualisieren
 					case 'Windgeschw.':
+					case 'wind_speed':
 						$wind = floatval(str_replace( ',','.',$sValue));
 						
 						if (!$valuesId = @$this->GetIDForIdent("WIND")) {
@@ -361,6 +466,7 @@ abstract class HPDevice extends IPSModule {
 
 					// Temperatur (Umweltsensor)  min alle 10min aktualisieren
 					case 'Temperatur':
+					case 'temperature_primary':
 						$temperature = floatval(str_replace( ',','.',$sValue));
 						
 						if (!$valuesId = @$this->GetIDForIdent("TEMPERATURE")) {
@@ -374,6 +480,7 @@ abstract class HPDevice extends IPSModule {
 
 					// Temperatur (Umweltsensor)
 					case 'Sonnenhöhe':
+					case 'sun_elevation':
 						$sonnenhoehe = floatval(str_replace( ',','.',$sValue));
 						
 						if (!$valuesId = @$this->GetIDForIdent("SUNHEIGHT")) {
@@ -397,6 +504,19 @@ abstract class HPDevice extends IPSModule {
 						}
 					break;
 					
+					case 'sun_direction':
+						$sonnenrichtung = floatval(str_replace( ',','.',$sValue));
+						
+						if (!$valuesId = @$this->GetIDForIdent("SUNDIRECTION")) {
+							$valuesId = $this->RegisterVariableFloat("SUNDIRECTION", "Sonnenrichtung", "", 6);
+							SetValueFloat( $valuesId, $sonnenrichtung );
+						}
+						else if( GetValueFloat( $valuesId ) != $sonnenrichtung ){
+							SetValueFloat( $valuesId, $sonnenrichtung );
+						}
+					break;
+					
+					case "timestamp":
 					case 'Aktualisiert':
 						$akttime = $sValue;
 						
@@ -413,6 +533,17 @@ abstract class HPDevice extends IPSModule {
 					case 'Bewegung':
 						$movement = ($sValue != "Nicht erkannt");
 						
+						if (!$valuesId = @$this->GetIDForIdent("MOTION")) {
+							$valuesId = $this->RegisterVariableBoolean("MOTION", "Bewegung", "~Motion", 1);
+							SetValueBoolean( $valuesId, $movement );
+						}
+						else if( GetValueBoolean( $valuesId ) != $movement ){
+							SetValueBoolean( $valuesId, $movement );
+						}
+					break;
+					case 'movement_detected':
+						$movement = ($sValue == "1");
+
 						if (!$valuesId = @$this->GetIDForIdent("MOTION")) {
 							$valuesId = $this->RegisterVariableBoolean("MOTION", "Bewegung", "~Motion", 1);
 							SetValueBoolean( $valuesId, $movement );
@@ -629,26 +760,37 @@ abstract class HPDevice extends IPSModule {
       return false;
     }
 	
-	
+
 	switch ($key) {
       case 'SWITCH':
 	  	if( $value == 1 )
+		{
+			$data_json = json_encode( array("name" => "TURN_ON_CMD" ) );		
 			$cmd = 10;
+		}
 		else
+		{
+			$data_json = json_encode( array("name" => "TURN_OFF_CMD" ) );		
 			$cmd = 11;
-
+		}
 		 $path= "cid=$cmd&did=$uniqueId&command=1";
          break;
 	  case 'AUTOMATIC':
-	     $automatikId = 3;
+	    $automatikId = 3;
   	
 		if( $value == 1 )
+		{
+			$data_json = json_encode( array("name" => "AUTO_MODE_CFG","value" => true ) );		
 			$cmd = "false";
+		}
 		else
+		{
+			$data_json = json_encode( array("name" => "AUTO_MODE_CFG","value" => false ) );		
 			$cmd = "true";
-		
+		}
+
 		$path= "automation=1&data={%22did%22:$uniqueId,%22automation%22:$automatikId,%22state%22:$cmd}";
-         break;
+        break;
       case 'SHUTTER':
       case 'DIMMERSTATE':
 		if( $value == 1 )
@@ -656,6 +798,7 @@ abstract class HPDevice extends IPSModule {
 		else
 			$pos = 0;
 		
+		$data_json = json_encode( array("name" => "GOTO_POS_CMD","value" => $pos ) );		
 		$path= "cid=9&did=$uniqueId&goto=$pos&command=1";
         break;
 		
@@ -676,8 +819,17 @@ abstract class HPDevice extends IPSModule {
 			switch( $value )
 			{
 				case -1: // Up				
+					$data_json = json_encode( array("name" => "POS_UP_CMD" ) );		
+					$cmd = -$value;
+					$path= "cid=$cmd&did=$uniqueId&command=1";
+					break;
 				case -2: // Stop
+					$data_json = json_encode( array("name" => "STOP_CMD" ) );		
+					$cmd = -$value;
+					$path= "cid=$cmd&did=$uniqueId&command=1";
+					break;
 				case -3: // Down
+					$data_json = json_encode( array("name" => "POS_DOWN_CMD" ) );		
 					$cmd = -$value;
 					$path= "cid=$cmd&did=$uniqueId&command=1";
 					break;
@@ -687,6 +839,7 @@ abstract class HPDevice extends IPSModule {
 		}
 		else {
 			$value = $this->LinearizeToDevice($value);
+			$data_json = json_encode( array("name" => "GOTO_POS_CMD","value" => $value ) );		
 			$path= "cid=9&did=$uniqueId&goto=$value&command=1";
 		}
 		break;
@@ -699,15 +852,33 @@ abstract class HPDevice extends IPSModule {
 			$value = 40;
 		if( $value > 400 )
 			$value = 400;
+
+		 $data_json = json_encode( array("name" => "TARGET_TEMPERATURE_CFG","value" => $value ) );		
 		 $path= "cid=9&did=$uniqueId&goto=$value&command=1";
          break;
 	  
       case 'SHUTTERPOS':
       case 'DIMMERPOS':
 		 $value = $this->LinearizeToDevice($value);
+		 $data_json = json_encode( array("name" => "GOTO_POS_CMD","value" => $value ) );		
 		 $path= "cid=9&did=$uniqueId&goto=$value&command=1";
          break;
     }
+	
+	if( HP_ProtocolVersion($this->GetBridge()) == 5 )
+	{
+		if( isset($data_json) )
+		{
+	//		IPS_LogMessage("SymconHP", "Version 5 command $data_json");
+
+			$path="command=$uniqueId=$data_json";
+			HP_Request($this->GetBridge(), $path );
+			IPS_Sleep(500);
+
+			$this->RequestData();
+		}
+		return true;
+	}
 	
 	if( isset($path)) {
 //		IPS_LogMessage("SymconHP", "$path");
