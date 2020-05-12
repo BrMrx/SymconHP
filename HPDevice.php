@@ -396,7 +396,7 @@ abstract class HPDevice extends IPSModule {
 					
 					// Sonnensensor
 					case 'sun_detected':
-						$sun = ($sValue != "1");
+						$sun = ($sValue == "1");
 						
 						if (!$valuesId = @$this->GetIDForIdent("SUN")) {
 							$valuesId = $this->RegisterVariableBoolean("SUN", "Sonne", "~Presence", 1);
