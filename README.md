@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.01 ###
+* Debug Option hinzugefügt
+
 ### Version 3.00 ###
 * Unterstützung des neuen Homepiloten Api ab Firmwareversion 5.0 Die genutzte Version muss in der Bridge als Parameter eingestellt werden.
 

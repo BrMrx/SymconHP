@@ -14,6 +14,7 @@ class HPBridge extends IPSModule {
     $this->RegisterPropertyInteger("HomePilotCategory", 0);
     $this->RegisterPropertyInteger("HomePilotSensorCategory", 0);
     $this->RegisterPropertyInteger("UpdateInterval", 5);
+    $this->RegisterPropertyBoolean("HomePilotDebug", false);
   }
 
   public function ApplyChanges() {
@@ -110,13 +111,18 @@ class HPBridge extends IPSModule {
   public function Request( string $path ) {
     $host = $this->GetHost();
 	$lProtocolVersion = $this->ProtocolVersion();
+ 	$lDebug = $this->ReadPropertyBoolean('HomePilotDebug');
+ 	
+ 	if( $lDebug )
+ 	{
+		IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", request path $path" );
+	}
  
 	switch( $lProtocolVersion )
 	{
 		//----------------------- Hompilot Protokollversion 3 und 4 ---------------------------------------
 	case 4:
 		{
-			IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Pfad $path" );
 	 
 		$client = curl_init();
 		curl_setopt($client, CURLOPT_URL, "http://$host/deviceajax.do");
@@ -207,11 +213,17 @@ class HPBridge extends IPSModule {
 				curl_setopt($client, CURLOPT_CUSTOMREQUEST, 'PUT');
 				curl_setopt($client, CURLOPT_POSTFIELDS,$lCommandData);
 			
-//				IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData" );
+ 				if( $lDebug )
+ 				{
+					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData" );
+				}
 			}
 			else
 			{
-//				IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url" );
+ 				if( $lDebug )
+ 				{
+					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url" );
+				}
 			}
 			
 			curl_setopt($client, CURLOPT_CONNECTTIMEOUT, 5);
@@ -227,6 +239,12 @@ class HPBridge extends IPSModule {
 				return false;
 			} else {
         		$result = json_decode($result);
+        		
+        		if( $lDebug )
+ 				{
+					IPS_LogMessage("SymconHP", "Request result: $result" );
+				}
+
                 
 				$retVal=null;
 
@@ -247,23 +265,43 @@ class HPBridge extends IPSModule {
 				else if( property_exists($result,"devices"))
 				{
 					$retVal =$result->devices;
+					if( $lDebug )
+ 					{
+						IPS_LogMessage("SymconHP", "devices: $result" );
+					}
 				}
 				else if( property_exists($result,"device"))
 				{
 					$retVal[0] = $result->device;
+					if( $lDebug )
+ 					{
+						IPS_LogMessage("SymconHP", "device: $result" );
+					}
 				}
 				else if( property_exists($result,"meters"))
 				{
 					$retVal =$result->meters;
+					if( $lDebug )
+ 					{
+						IPS_LogMessage("SymconHP", "meters: $result" );
+					}
 				}
 				else if( property_exists($result,"transmitters"))
 				{
+					if( $lDebug )
+ 					{
+						IPS_LogMessage("SymconHP", "transmitters: $result" );
+					}
 					$retVal =$result->transmitters;         
 				}
 				else if( property_exists($result,"payload")  )
 				{
 					echo "payload gefunden \n";
 					$retVal =$result->payload;
+					if( $lDebug )
+ 					{
+						IPS_LogMessage("SymconHP", "payload: $result" );
+					}
 				}
 
 
