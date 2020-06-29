@@ -256,14 +256,6 @@ class HPBridge extends IPSModule {
 							IPS_LogMessage("SymconHP", "single node request payload:".json_encode($retVal, JSON_PRETTY_PRINT) );
 						}
 					}
-					else if( property_exists($result,"device"))
-					{
-						$retVal[0] = $result->device;
-						if( $lDebug )
-	 					{
-							IPS_LogMessage("SymconHP", "single node request device: ".json_encode($retVal, JSON_PRETTY_PRINT) );
-						}
-					}
 					else
 					{
 						$retVal = null;
