@@ -242,7 +242,7 @@ class HPBridge extends IPSModule {
         		
         		if( $lDebug )
  				{
-					IPS_LogMessage("SymconHP", "Request result: ".json_encode($result) );
+					IPS_LogMessage("SymconHP", "Request result: ".$result );
 				}
 
                 
