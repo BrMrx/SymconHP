@@ -242,7 +242,7 @@ class HPBridge extends IPSModule {
         		
         		if( $lDebug )
  				{
-					IPS_LogMessage("SymconHP", "Request result: $result" );
+					IPS_LogMessage("SymconHP", "Request result: ".json_encode($result) );
 				}
 
                 
@@ -267,7 +267,7 @@ class HPBridge extends IPSModule {
 					$retVal =$result->devices;
 					if( $lDebug )
  					{
-						IPS_LogMessage("SymconHP", "devices: $result" );
+						IPS_LogMessage("SymconHP", "devices: ".json_encode($result) );
 					}
 				}
 				else if( property_exists($result,"device"))
@@ -275,7 +275,7 @@ class HPBridge extends IPSModule {
 					$retVal[0] = $result->device;
 					if( $lDebug )
  					{
-						IPS_LogMessage("SymconHP", "device: $result" );
+						IPS_LogMessage("SymconHP", "device: ".json_encode($result) );
 					}
 				}
 				else if( property_exists($result,"meters"))
@@ -283,14 +283,14 @@ class HPBridge extends IPSModule {
 					$retVal =$result->meters;
 					if( $lDebug )
  					{
-						IPS_LogMessage("SymconHP", "meters: $result" );
+						IPS_LogMessage("SymconHP", "meters: ".json_encode($result) );
 					}
 				}
 				else if( property_exists($result,"transmitters"))
 				{
 					if( $lDebug )
  					{
-						IPS_LogMessage("SymconHP", "transmitters: $result" );
+						IPS_LogMessage("SymconHP", "transmitters: ".json_encode($result) );
 					}
 					$retVal =$result->transmitters;         
 				}
@@ -300,7 +300,7 @@ class HPBridge extends IPSModule {
 					$retVal =$result->payload;
 					if( $lDebug )
  					{
-						IPS_LogMessage("SymconHP", "payload: $result" );
+						IPS_LogMessage("SymconHP", "payload: ".json_encode($result) );
 					}
 				}
 
