@@ -139,8 +139,10 @@ abstract class HPDevice extends IPSModule {
     }
 	
     $description = utf8_decode((string)$data['description']);
-    if (IPS_GetProperty($this->InstanceID, 'description') != $description) {
+    $lOdDescription = IPS_GetProperty($this->InstanceID, 'description');
+    if ( $lOdDescription != $description) {
         IPS_SetProperty($this->InstanceID, 'description', $description);
+        IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." update description '".$lOdDescription."' -> '".$description."'" );
         $dirty = true;
     }
 
@@ -198,9 +200,10 @@ abstract class HPDevice extends IPSModule {
 			  }			  
 		  }
 		  
-		  
-		  if (IPS_GetProperty($this->InstanceID, 'productName') != $productName) {
+		  $lOldproductName = IPS_GetProperty($this->InstanceID, 'productName');
+		  if ( $lOldproductName != $productName) {
 			IPS_SetProperty($this->InstanceID, 'productName', $productName);
+			IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." update productName '".$lOldproductName."' -> '".$productName."'" );
 			$dirty = true;
 		  }
 
@@ -210,15 +213,19 @@ abstract class HPDevice extends IPSModule {
      		IPS_LogMessage("SymconHP", "unbekannter Typ '".$productName."' -> Standardbehandlung als Schalter");
 		 }
 
-
-		if (IPS_GetProperty($this->InstanceID, 'NodeFeatures') != $nodeFeatures) {
+		$lOldNodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
+		if ( $lOldNodeFeatures != $nodeFeatures) {
 		  IPS_SetProperty($this->InstanceID, 'NodeFeatures', $nodeFeatures);
+		  IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." update productName '".$lOldNodeFeatures."' -> '".$nodeFeatures."'" );
 		  $dirty = true;
 		}
 	}
 
     if ($dirty) 
+    {
+		IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." apply changes" );
 		IPS_ApplyChanges($this->InstanceID);
+	}
 
 
 	// Bei Knoten Status, Position anlegen/setzen
