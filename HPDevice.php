@@ -109,23 +109,30 @@ abstract class HPDevice extends IPSModule {
 	
     $values = (array)@$data['statusesMap'];
 
+	$lNewStatus;
     // Status
     if ( $this->ReadPropertyString("UniqueId") == '') {
-      $this->SetStatus(104);
+      if( $this->GetStatus() != 104 )
+      	$this->SetStatus(104);
       return false;
     } else {
-      $this->SetStatus(102);
+      $lNewStatus = 102;
     }
 
 	// wenn der Status nicht gültig ist -> Knoten nicht erreichbar
 	$statusValid = $data['statusValid'];
 	if( $statusValid == 1 )
-      $this->SetStatus(102);
+      $lNewStatus = 102;
 	else
-      $this->SetStatus(201);
+      $lNewStatus = 201;
 	
     $dirty = false;
 	
+	if( $lNewStatus != $this->GetStatus() )
+	{
+		$this->SetStatus($lNewStatus);
+		$dirty = true;
+	}
 
     /*
      * Properties
