@@ -101,6 +101,9 @@ class HPBridge extends IPSModule {
   public function ProtocolVersion() {
 		return $this->GetHomePilotVersion();
   }
+  public function Debug() {
+		return $this->ReadPropertyBoolean('HomePilotDebug');
+  }
 
   /*
   Direkten Request an den Homepiloten schicken

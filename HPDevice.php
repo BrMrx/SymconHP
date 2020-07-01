@@ -668,7 +668,8 @@ abstract class HPDevice extends IPSModule {
 	}
 	else
 	{
-      IPS_LogMessage("SymconHP", "Es ist ein Fehler bei der Datenabfrage ".$lBasePath." aufgetreten");
+	  if( HP_Debug($this->GetBridge()) )
+      	IPS_LogMessage("SymconHP", "Keine Daten bei Datenabfrage '".$lBasePath."'");
     }
 }
 
