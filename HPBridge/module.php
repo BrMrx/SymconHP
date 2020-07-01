@@ -183,7 +183,7 @@ class HPBridge extends IPSModule {
 			$lSingleNodeDataRequst = false;
 			$lParArray = explode('=',  $path );
 			
-			if( $lParArray[1] > 1 )
+			if( count($lParArray) > 2 )
 			{
 				if( $lParArray[0] == "command" )
 				{

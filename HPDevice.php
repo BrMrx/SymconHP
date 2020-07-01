@@ -652,7 +652,15 @@ abstract class HPDevice extends IPSModule {
    * da direkt alle Lampen abgeglichen werden mit nur 1 Request zum Homepiloten)
    */
   public function RequestData() {
-    $data = HP_Request($this->GetBridge(), $this->BasePath() );
+  	$lBasePath = $this->BasePath();
+  	
+  	if( HP_ProtocolVersion($this->GetBridge()) == 5 )
+  	{
+  		// noch etwas dranhängen damit der single Request erkannt wird
+  		$lBasePath .= "=single-request";
+  	}
+  
+    $data = HP_Request($this->GetBridge(), $lBasePath );
 	
 	if($data)
 	{
@@ -660,7 +668,7 @@ abstract class HPDevice extends IPSModule {
 	}
 	else
 	{
-      IPS_LogMessage("SymconHP", "Es ist ein Fehler bei der Datenabfrage ".$this->BasePath()." aufgetreten");
+      IPS_LogMessage("SymconHP", "Es ist ein Fehler bei der Datenabfrage ".$lBasePath." aufgetreten");
     }
 }
 
