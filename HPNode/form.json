@@ -8,17 +8,26 @@
       "type": "Label",
       "label": "Linearisierung (Dimmer, RolloTron)"
     }, {
-      "type": "ValidationTextBox",
+      "type": "NumberSpinner",
       "name": "Lin25",
-      "caption": "25 % entspricht"
+      "caption": "25 % entspricht",
+	  "suffix": "%",
+	  "minimum": "0",
+	  "maximum": "100"
     }, {
-      "type": "ValidationTextBox",
+      "type": "NumberSpinner",
       "name": "Lin50",
-      "caption": "50 % entspricht"
+      "caption": "50 % entspricht",
+	  "suffix": "%",
+	  "minimum": "0",
+	  "maximum": "100"
     }, {
-      "type": "ValidationTextBox",
+      "type": "NumberSpinner",
       "name": "Lin75",
-      "caption": "75 % entspricht"
+      "caption": "75 % entspricht",
+	  "suffix": "%",
+	  "minimum": "0",
+	  "maximum": "100"
     }, {
       "type": "Label",
       "label": "Die nachfolgenden Werte, werden automatisch aktualisiert bei \"Status neu einlesen.\""
