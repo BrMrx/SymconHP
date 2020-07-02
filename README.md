@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.03 ###
+* BugFix im Instanz Dialog für die Knoten. Die Linearisierungswerte werden nun als Integerwerte verarbeitet und auf Min/Maxwerte geprüft 
+ 
 ### Version 3.02 ###
 * Geräte mit did 1 sollten nun auch funktionieren
 
