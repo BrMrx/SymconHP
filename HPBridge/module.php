@@ -118,10 +118,6 @@ class HPBridge extends IPSModule {
  	
  	
  	$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", request path $path", 0 );
- 	if( $lDebug )
- 	{
-		IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", request path $path" );
-	}
  
 	switch( $lProtocolVersion )
 	{
@@ -219,18 +215,10 @@ class HPBridge extends IPSModule {
 				curl_setopt($client, CURLOPT_POSTFIELDS,$lCommandData);
 			
 				$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData", 0 );
- 				if( $lDebug )
- 				{
-					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData" );
-				}
-			}
+ 			}
 			else
 			{
 			 	$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", Request $url", 0 );
- 				if( $lDebug )
- 				{
-					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url" );
-				}
 			}
 			
 			curl_setopt($client, CURLOPT_CONNECTTIMEOUT, 5);
@@ -258,69 +246,46 @@ class HPBridge extends IPSModule {
 						property_exists($result->payload->device,"capabilities")	)
 					{
 						$retVal =$result->payload->device->capabilities;
-						if( $lDebug )
- 						{
-							IPS_LogMessage("SymconHP", "single node request payload:".json_encode($retVal, JSON_PRETTY_PRINT) );
-						}
+						$this->SendDebug("Request", "single node request payload:".json_encode($retVal, JSON_PRETTY_PRINT), 0 );
 					}
 					else
 					{
 						$retVal = null;
-						if( $lDebug )
- 						{
-							IPS_LogMessage("SymconHP", "single node request - no payload-device-capabilities found!!!" );
-							IPS_LogMessage("SymconHP", "Request result: ".json_encode($result, JSON_PRETTY_PRINT) );
-						}
+						
+						$this->SendDebug("Request", "single node request - no payload-device-capabilities found!!!", 0 );
+						$this->SendDebug("Request", "Request result: ".json_encode($result, JSON_PRETTY_PRINT), 0 );
 					}
 						
 				}	
 				else if( property_exists($result,"devices"))
 				{
 					$retVal =$result->devices;
-					if( $lDebug )
- 					{
-						IPS_LogMessage("SymconHP", "devices: ".json_encode($retVal, JSON_PRETTY_PRINT) );
-					}
+					$this->SendDebug("Request", "devices: ".json_encode($retVal, JSON_PRETTY_PRINT), 0);
 				}
 				else if( property_exists($result,"device"))
 				{
 					$retVal[0] = $result->device;
-					if( $lDebug )
- 					{
-						IPS_LogMessage("SymconHP", "device: ".json_encode($retVal, JSON_PRETTY_PRINT) );
-					}
+					$this->SendDebug("Request", "device: ".json_encode($retVal, JSON_PRETTY_PRINT), 0);
 				}
 				else if( property_exists($result,"meters"))
 				{
 					$retVal =$result->meters;
-					if( $lDebug )
- 					{
-						IPS_LogMessage("SymconHP", "meters: ".json_encode($retVal, JSON_PRETTY_PRINT) );
-					}
+					$this->SendDebug("Request", "meters: ".json_encode($retVal, JSON_PRETTY_PRINT), 0);
 				}
 				else if( property_exists($result,"transmitters"))
 				{
-					if( $lDebug )
- 					{
-						IPS_LogMessage("SymconHP", "transmitters: ".json_encode($retVal, JSON_PRETTY_PRINT) );
-					}
 					$retVal =$result->transmitters;         
+					$this->SendDebug("Request", "transmitters: ".json_encode($retVal, JSON_PRETTY_PRINT), 0);
 				}
 				else if( property_exists($result,"payload")  )
 				{
 					$retVal =$result->payload;
-					if( $lDebug )
- 					{
-						IPS_LogMessage("SymconHP", "payload: ".json_encode($retVal, JSON_PRETTY_PRINT) );
-					}
+					$this->SendDebug("Request", "payload: ".json_encode($retVal, JSON_PRETTY_PRINT), 0);
 				}
 				else 
 				{
-					if( $lDebug )
- 					{
-						IPS_LogMessage("SymconHP", "can not assign result!!!" );
-						IPS_LogMessage("SymconHP", "Request result: ".json_encode($result, JSON_PRETTY_PRINT) );
-					}	
+					$this->SendDebug("Request", "can not assign result!!!", 0);
+					$this->SendDebug("Request", "Request result: ".json_encode($result, JSON_PRETTY_PRINT), 0);
 				}
 
 
