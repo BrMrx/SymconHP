@@ -14,7 +14,6 @@ class HPBridge extends IPSModule {
     $this->RegisterPropertyInteger("HomePilotCategory", 0);
     $this->RegisterPropertyInteger("HomePilotSensorCategory", 0);
     $this->RegisterPropertyInteger("UpdateInterval", 5);
-    $this->RegisterPropertyBoolean("HomePilotDebug", false);
   }
 
   public function ApplyChanges() {
@@ -101,10 +100,7 @@ class HPBridge extends IPSModule {
   public function ProtocolVersion() {
 		return $this->GetHomePilotVersion();
   }
-  public function Debug() {
-		return $this->ReadPropertyBoolean('HomePilotDebug');
-  }
-
+ 
   /*
   Direkten Request an den Homepiloten schicken
    Der Parameter $path wird and das Kommando:
@@ -113,9 +109,7 @@ class HPBridge extends IPSModule {
   */
   public function Request( string $path ) {
     $host = $this->GetHost();
-	$lProtocolVersion = $this->ProtocolVersion();
- 	$lDebug = $this->ReadPropertyBoolean('HomePilotDebug');
- 	
+	$lProtocolVersion = $this->ProtocolVersion(); 	
  	
  	$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", request path $path", 0 );
  

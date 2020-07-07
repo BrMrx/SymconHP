@@ -675,8 +675,7 @@ abstract class HPDevice extends IPSModule {
 	}
 	else
 	{
-	  if( HP_Debug($this->GetBridge()) )
-      	IPS_LogMessage("SymconHP", "Keine Daten bei Datenabfrage '".$lBasePath."'");
+		$this->SendDebug( "RequestData", "Keine Daten bei Datenabfrage '".$lBasePath."'", 0 );
     }
 }
 
@@ -738,7 +737,7 @@ abstract class HPDevice extends IPSModule {
    * HP_GetValue($id, $key)
    * Liefert einen Deviceparameter (siehe HP_SetValue)
    */
-  public function GetValue( $key) {
+  public function GetValue( string $key) {
     switch ($key) {
       default:
         $value = GetValue(@IPS_GetObjectIDByIdent($key, $this->InstanceID));

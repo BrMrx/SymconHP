@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.04 ###
+* für Debug wird  un das Standard Debug Fenster der Instanzen genutzt 
+
 ### Version 3.03 ###
 * BugFix im Instanz Dialog für die Knoten. Die Linearisierungswerte werden nun als Integerwerte verarbeitet und auf Min/Maxwerte geprüft 
  
