@@ -117,7 +117,7 @@ class HPBridge extends IPSModule {
  	$lDebug = $this->ReadPropertyBoolean('HomePilotDebug');
  	
  	
- 	$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", request path $path" );
+ 	$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", request path $path", 0 );
  	if( $lDebug )
  	{
 		IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", request path $path" );
@@ -218,10 +218,10 @@ class HPBridge extends IPSModule {
 				curl_setopt($client, CURLOPT_CUSTOMREQUEST, 'PUT');
 				curl_setopt($client, CURLOPT_POSTFIELDS,$lCommandData);
 			
-				$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData" );
+				$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData", 0 );
  				if( $lDebug )
  				{
-					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData" );
+					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData", 0 );
 				}
 			}
 			else
