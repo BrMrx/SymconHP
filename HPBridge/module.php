@@ -221,12 +221,12 @@ class HPBridge extends IPSModule {
 				$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData", 0 );
  				if( $lDebug )
  				{
-					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData", 0 );
+					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url Command $lCommandData" );
 				}
 			}
 			else
 			{
-			 	$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", Request $url" );
+			 	$this->SendDebug("Request", "Protocol Version ".$this->ProtocolVersion().", Request $url", 0 );
  				if( $lDebug )
  				{
 					IPS_LogMessage("SymconHP", "Protocol Version ".$this->ProtocolVersion().", Request $url" );
