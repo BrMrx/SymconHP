@@ -569,15 +569,20 @@ abstract class HPDevice extends IPSModule {
 						}
 					break;
 					
+					// Tri State Fenstersensor
 					case 'contact_state':
-					 	$shutter = ($sValue != "closed");
+						$shutter = 0;
+						if($sValue == "tilted")
+							$shutter = 1;
+						else if($sValue == "open")
+							$shutter = 2;
 						
-						if (!$valuesId = @$this->GetIDForIdent("SHUTTER")) {
-							$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Schließer", "~Window", 1);
-							SetValueBoolean( $valuesId, $shutter );
+						if (!$valuesId = @$this->GetIDForIdent("WINDOW")) {
+							$valuesId = $this->RegisterVariableInteger("WINDOW", "Schließer", "~Window.HM", 1);
+							SetValueInteger( $valuesId, $shutter );
 						}
-						else if( GetValueBoolean( $valuesId ) != $shutter ){
-							SetValueBoolean( $valuesId, $shutter );
+						else if( GetValueInteger( $valuesId ) != $shutter ){
+							SetValueInteger( $valuesId, $shutter );
 						}
 					break;
 

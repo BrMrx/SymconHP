@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.06 ###
+* der Fensterkontakt hat beim Homepiloten Version 5 nun alle drei möglichen Zustände
+
 ### Version 3.05 ###
 * der Fensterkontakt sollte nun auch für den Homepiloten Version 5 wieder funktionieren 
 * Debuging für eine Instanz landet nun auch im Instanzfenster 
