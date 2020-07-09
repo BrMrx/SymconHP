@@ -23,7 +23,7 @@ abstract class HPDevice extends IPSModule {
 	if (!IPS_VariableProfileExists('Window.HP')) 
 		 IPS_CreateVariableProfile('Window.HP', 1);
     IPS_SetVariableProfileIcon('Window.HP', 'Window');
-    IPS_SetVariableProfileAssociation('Window.HP', 0,  'Geschlossen', '', 0x000000);
+    IPS_SetVariableProfileAssociation('Window.HP', 0,  'Geschlossen', '', -1 );
     IPS_SetVariableProfileAssociation('Window.HP', 1,  'Gekippt', 	'', 0x0000FF);
     IPS_SetVariableProfileAssociation('Window.HP', 2,  'Geöffnet', '', 0x00FF00);
 
