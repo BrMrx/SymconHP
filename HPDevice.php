@@ -20,6 +20,14 @@ abstract class HPDevice extends IPSModule {
     IPS_SetVariableProfileAssociation('CommandCtrl.HP', 100, '100%', '', 0x000000);
     IPS_SetVariableProfileIcon('CommandCtrl.HP', 'Shutter');
 	
+	if (!IPS_VariableProfileExists('Window.HP')) 
+		 IPS_CreateVariableProfile('Window.HP', 1);
+    IPS_SetVariableProfileIcon('Window.HP', 'Window');
+    IPS_SetVariableProfileAssociation('Window.HP', 0,  'Geschlossen', '', 0x000000);
+    IPS_SetVariableProfileAssociation('Window.HP', 1,  'Gekippt', 	'', 0x0000FF);
+    IPS_SetVariableProfileAssociation('Window.HP', 2,  'Geöffnet', '', 0x00FF00);
+
+	
      if (!IPS_VariableProfileExists('TemperaturCtrl.HP')) 
           IPS_CreateVariableProfile('TemperaturCtrl.HP', 2);
      IPS_SetVariableProfileValues('TemperaturCtrl.HP', 4, 40, 0.5 );
@@ -578,7 +586,7 @@ abstract class HPDevice extends IPSModule {
 							$shutter = 2;
 						
 						if (!$valuesId = @$this->GetIDForIdent("WINDOW")) {
-							$valuesId = $this->RegisterVariableInteger("WINDOW", "Schließkontakt", "~Window.HM", 1);
+							$valuesId = $this->RegisterVariableInteger("WINDOW", "Schließkontakt", "Window.HP", 1);
 							SetValueInteger( $valuesId, $shutter );
 						}
 						else if( GetValueInteger( $valuesId ) != $shutter ){
