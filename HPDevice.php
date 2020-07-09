@@ -383,7 +383,7 @@ abstract class HPDevice extends IPSModule {
 		else
 			$dataValues = $data['data'];
 		
-	    $this->SendDebug("ApplyJsonData", "Sensor Values:".print_r($sensorValue, TRUE), 0);
+	    $this->SendDebug("ApplyJsonData", "Sensor Values:".print_r($dataValues, TRUE), 0);
 		
        foreach ($dataValues as $sensorValue) {
 		   $sensorArray = (array)$sensorValue;
