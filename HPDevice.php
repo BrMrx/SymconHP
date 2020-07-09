@@ -119,6 +119,8 @@ abstract class HPDevice extends IPSModule {
       $lNewStatus = 102;
     }
 
+	$this->SendDebug("ApplyJsonData", json_encode($data, JSON_PRETTY_PRINT), 0);
+
 	// wenn der Status nicht gültig ist -> Knoten nicht erreichbar
 	$statusValid = $data['statusValid'];
 	if( $statusValid == 1 )
@@ -131,7 +133,6 @@ abstract class HPDevice extends IPSModule {
 	if( $lNewStatus != $this->GetStatus() )
 	{
 		$this->SetStatus($lNewStatus);
-		$dirty = true;
 	}
 
     /*
@@ -149,7 +150,7 @@ abstract class HPDevice extends IPSModule {
     $lOdDescription = IPS_GetProperty($this->InstanceID, 'description');
     if ( $lOdDescription != $description) {
         IPS_SetProperty($this->InstanceID, 'description', $description);
-        IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." update description '".$lOdDescription."' -> '".$description."'" );
+        $this->SendDebug("ApplyJsonData", "Instanz ".$this->InstanceID." update description '".$lOdDescription."' -> '".$description."'", 0 );
         $dirty = true;
     }
 
@@ -210,7 +211,7 @@ abstract class HPDevice extends IPSModule {
 		  $lOldproductName = IPS_GetProperty($this->InstanceID, 'productName');
 		  if ( $lOldproductName != $productName) {
 			IPS_SetProperty($this->InstanceID, 'productName', $productName);
-			IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." update productName '".$lOldproductName."' -> '".$productName."'" );
+			$this->SendDebug("ApplyJsonData", "Instanz ".$this->InstanceID." update productName '".$lOldproductName."' -> '".$productName."'", 0 );
 			$dirty = true;
 		  }
 
@@ -223,14 +224,14 @@ abstract class HPDevice extends IPSModule {
 		$lOldNodeFeatures = IPS_GetProperty($this->InstanceID, 'NodeFeatures');
 		if ( $lOldNodeFeatures != $nodeFeatures) {
 		  IPS_SetProperty($this->InstanceID, 'NodeFeatures', $nodeFeatures);
-		  IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." update productName '".$lOldNodeFeatures."' -> '".$nodeFeatures."'" );
+		  $this->SendDebug("ApplyJsonData", "Instanz ".$this->InstanceID." update productName '".$lOldNodeFeatures."' -> '".$nodeFeatures."'", 0 );
 		  $dirty = true;
 		}
 	}
 
     if ($dirty) 
     {
-		IPS_LogMessage("SymconHP", "Instanz ".$this->InstanceID." apply changes" );
+		$this->SendDebug("ApplyJsonData", "Instanz ".$this->InstanceID." apply changes", 0 );
 		IPS_ApplyChanges($this->InstanceID);
 	}
 
@@ -382,6 +383,7 @@ abstract class HPDevice extends IPSModule {
 		else
 			$dataValues = $data['data'];
 		
+	    $this->SendDebug("ApplyJsonData", "Sensor Values:".json_encode($values, JSON_PRETTY_PRINT), 0);
 		
        foreach ($dataValues as $sensorValue) {
 		   $sensorArray = (array)$sensorValue;
@@ -566,6 +568,18 @@ abstract class HPDevice extends IPSModule {
 							SetValueBoolean( $valuesId, $movement );
 						}
 					break;
+					
+					case 'contact_state':
+					 	$shutter = ($sValue != "closed");
+						
+						if (!$valuesId = @$this->GetIDForIdent("SHUTTER")) {
+							$valuesId = $this->RegisterVariableBoolean("SHUTTER", "Schließer", "~Window", 1);
+							SetValueBoolean( $valuesId, $shutter );
+						}
+						else if( GetValueBoolean( $valuesId ) != $shutter ){
+							SetValueBoolean( $valuesId, $shutter );
+						}
+					break;
 
 					// Produktname Sensor DuoFern Funksender UP
 					case 'Schließer':
@@ -634,7 +648,7 @@ abstract class HPDevice extends IPSModule {
 
 
 					default:
-						IPS_LogMessage("HPBridge","unknown Sensor Value '$sKey': $sValue");
+						$this->SendDebug( "ApplyJsonData","unknown Sensor Value '$sKey': $sValue", 0 );
 					break;
 					
 				}
