@@ -163,6 +163,13 @@ abstract class HPDevice extends IPSModule {
     }
 
 
+	if( array_key_exists("statusValid",$data) )
+	{
+		$this->SendDebug( "ApplyJsonData", "Instanz ".$this->InstanceID."statusValid == ".print_r($data['statusValid'], true), 0 );
+	}
+
+
+
 	 $nodeFeatures = 0;
 
 	if (get_class($this) == 'HPNode')
