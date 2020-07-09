@@ -578,7 +578,7 @@ abstract class HPDevice extends IPSModule {
 							$shutter = 2;
 						
 						if (!$valuesId = @$this->GetIDForIdent("WINDOW")) {
-							$valuesId = $this->RegisterVariableInteger("WINDOW", "Schließer", "~Window.HM", 1);
+							$valuesId = $this->RegisterVariableInteger("WINDOW", "Schließkontakt", "~Window.HM", 1);
 							SetValueInteger( $valuesId, $shutter );
 						}
 						else if( GetValueInteger( $valuesId ) != $shutter ){
