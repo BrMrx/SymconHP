@@ -163,14 +163,20 @@ abstract class HPDevice extends IPSModule {
     }
 
 
-	if( array_key_exists("statusValid",$data) )
+	if( array_key_exists("batteryLow",$data) )
 	{
-		$this->SendDebug( "ApplyJsonData", "Instanz ".$this->InstanceID."statusValid == ".print_r($data['statusValid'], true), 0 );
+		$lBattState = boolval($data['batteryLow']);
+		if (!$valuesId = @$this->GetIDForIdent("BATTERY_STATE")) {
+			$valuesId = $this->RegisterVariableBoolean("BATTERY_STATE", "Batteriestatus", "~Battery", 10);
+			SetValueBoolean( $valuesId, $lBattState );
+		}
+		else if( GetValueBoolean( $valuesId ) != $lBattState ){
+			SetValueBoolean( $valuesId, $lBattState );
+		}
 	}
 
 
-
-	 $nodeFeatures = 0;
+	$nodeFeatures = 0;
 
 	if (get_class($this) == 'HPNode')
 	{

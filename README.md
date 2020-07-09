@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.07 ###
+* hat ein Autor oder ein Sensor einen Batteriestatus wird der nun auch in IP Symcon angelegt
+
 ### Version 3.06 ###
 * der Fensterkontakt hat beim Homepiloten Version 5 nun alle drei möglichen Zustände
 
