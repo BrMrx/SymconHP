@@ -20,13 +20,13 @@ abstract class HPDevice extends IPSModule {
     IPS_SetVariableProfileAssociation('CommandCtrl.HP', 100, '100%', '', 0x000000);
     IPS_SetVariableProfileIcon('CommandCtrl.HP', 'Shutter');
 	
-	if (!IPS_VariableProfileExists('Window.HP')) 
-		 IPS_CreateVariableProfile('Window.HP', 1);
-    IPS_SetVariableProfileIcon('Window.HP', 'Window');
-    IPS_SetVariableProfileAssociation('Window.HP', 0,  'Geschlossen', '', -1 );
-    IPS_SetVariableProfileAssociation('Window.HP', 1,  'Gekippt', 	'', 0x0000FF);
-    IPS_SetVariableProfileAssociation('Window.HP', 2,  'Geöffnet', '', 0x00FF00);
-	IPS_SetVariableProfileValues('Window.HP', 0, 2, 1 );
+	if (!IPS_VariableProfileExists('WindowHP.Reversed')) 
+		 IPS_CreateVariableProfile('WindowHP.Reversed', 1);
+    IPS_SetVariableProfileIcon('WindowHP.Reversed', 'Window');
+    IPS_SetVariableProfileAssociation('WindowHP.Reversed', 0,  'Geschlossen', '', -1 );
+    IPS_SetVariableProfileAssociation('WindowHP.Reversed', 1,  'Gekippt', 	'', 0x0000FF);
+    IPS_SetVariableProfileAssociation('WindowHP.Reversed', 2,  'Geöffnet', '', 0x00FF00);
+	IPS_SetVariableProfileValues('WindowHP.Reversed', 0, 2, 1 );
 	
      if (!IPS_VariableProfileExists('TemperaturCtrl.HP')) 
           IPS_CreateVariableProfile('TemperaturCtrl.HP', 2);
