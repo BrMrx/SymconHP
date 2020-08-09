@@ -514,7 +514,7 @@ abstract class HPDevice extends IPSModule {
 							SetValueFloat( $valuesId, $temperature );
 						}
 					break;
-
+					
 					// Temperatur (Umweltsensor)
 					case 'Sonnenhöhe':
 					case 'sun_elevation':
@@ -661,6 +661,7 @@ abstract class HPDevice extends IPSModule {
 					
 					// DuoFern Raumthermostat 
 					case 'Aktueller Sollwert':
+					case 'temperature_target':
 						$temperature = floatval(str_replace( ',','.',$sValue));
 						
 						if (!$valuesId = @$this->GetIDForIdent("TEMPERATUR_NOM")) {
