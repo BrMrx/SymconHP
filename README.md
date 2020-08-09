@@ -32,7 +32,7 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 ## Änderungen
 
 ### Version 3.08 ###
-* DuoFern Raumthermostat Solltemperatur wurde in Homepilot Version 5 nicht unterstützt, Device 32501812_S und 32501812_A wurde für Homepilot noch nicht unterstützt
+* DuoFern Raumthermostat Solltemperatur wurde in Homepilot Version 5 nicht unterstützt, Device 32501812_S und 32501812_A wurde für Homepilot 5 noch nicht unterstützt, Heizklörperstellantrieb wurde falsch zugeordnet
 
 ### Version 3.07 ###
 * hat ein Autor oder ein Sensor einen Batteriestatus wird der nun auch in IP Symcon angelegt

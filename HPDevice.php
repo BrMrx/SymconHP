@@ -91,7 +91,7 @@ abstract class HPDevice extends IPSModule {
 		'32501812' 		=> array( 'DuoFern Raumthermostat 9485',             11),
 		'32501812_A' 	=> array( 'DuoFern Raumthermostat 9485 Aktor',       11),
 		'32501812_S' 	=> array( 'DuoFern Raumthermostat 9485 Sensor',      11),
-		'35003064' 		=> array( 'DuoFern Heizkörperstellantrieb 9433',     2 ),
+		'35003064' 		=> array( 'DuoFern Heizkörperstellantrieb 9433',     11),
 		'99999981' 		=> array( 'Philips Hue Weiße-Lampe',                 2 ),
 		'99999982' 		=> array( 'Philips Hue Ambiance-Spot',               2 ),
 		'99999983' 		=> array( 'Philips Hue RGB-Lampe',                   2 ),
