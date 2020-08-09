@@ -91,7 +91,7 @@ abstract class HPDevice extends IPSModule {
 		'32501812' 		=> array( 'DuoFern Raumthermostat 9485',             11),
 		'32501812_A' 	=> array( 'DuoFern Raumthermostat 9485 Aktor',       11),
 		'32501812_S' 	=> array( 'DuoFern Raumthermostat 9485 Sensor',      11),
-		'35003064' 		=> array( 'DuoFern Heizkörperstellantrieb 9433',     11),
+		'35003064' 		=> array( 'DuoFern Heizkörperstellantrieb 9433',     14),
 		'99999981' 		=> array( 'Philips Hue Weiße-Lampe',                 2 ),
 		'99999982' 		=> array( 'Philips Hue Ambiance-Spot',               2 ),
 		'99999983' 		=> array( 'Philips Hue RGB-Lampe',                   2 ),
@@ -206,7 +206,8 @@ abstract class HPDevice extends IPSModule {
 							8 => "RolloTube",
 							9 => "Universal-Aktor",
 							12 => "Troll Comfort",
-							13 => "Troll Basis"
+							13 => "Troll Basis",
+							14 => "Heizkörperstellantrieb"
 							);
 			
 			 foreach ($typeList as $typeId => $typeKeword) 
@@ -320,6 +321,46 @@ abstract class HPDevice extends IPSModule {
 					SetValueInteger( $valuesId, $cmdpos );
 				}
 
+				$automatik = ($values['Manuellbetrieb'] == 0);
+				if (!$valuesId = @$this->GetIDForIdent("AUTOMATIC")) {
+					$valuesId = $this->RegisterVariableBoolean("AUTOMATIC", "Automatik", "~Switch", 10);
+					$this->EnableAction("AUTOMATIC");
+					SetValueBoolean( $valuesId, $automatik );
+					if( $automatik )
+						IPS_SetIcon($valuesId, 'Electricity');
+					else
+						IPS_SetIcon($valuesId, 'Execute');
+				}
+				else if( GetValueBoolean( $valuesId ) != $automatik ){
+					SetValueBoolean( $valuesId, $automatik );
+					if( $automatik )
+						IPS_SetIcon($valuesId, 'Electricity');
+					else
+						IPS_SetIcon($valuesId, 'Execute');
+				}
+			break;
+
+			case 14: //  "Heizkörper stellantrieb"
+				$desttemperatur = $position / 10.;
+				if (!$valuesId = @$this->GetIDForIdent("DESTTEMP")) {
+					$valuesId = $this->RegisterVariableFloat("DESTTEMP", "Solltemperatur", "TemperaturCtrl.HP", 1);
+			        $this->EnableAction("DESTTEMP");
+					SetValueFloat( $valuesId, $desttemperatur );
+				}
+				else if( GetValueFloat( $valuesId ) != $desttemperatur ){
+					SetValueFloat( $valuesId, $desttemperatur );
+				}
+				
+				$temperature = $values['acttemperatur'] / 10.;
+				
+				if (!$valuesId = @$this->GetIDForIdent("TEMPERATURE")) {
+					$valuesId = $this->RegisterVariableFloat("TEMPERATURE", "Temperatur", "~Temperature", 4);
+					SetValueFloat( $valuesId, $temperature );
+				}
+				else if( GetValueFloat( $valuesId ) != $temperature ){
+					SetValueFloat( $valuesId, $temperature );
+				}
+				
 				$automatik = ($values['Manuellbetrieb'] == 0);
 				if (!$valuesId = @$this->GetIDForIdent("AUTOMATIC")) {
 					$valuesId = $this->RegisterVariableBoolean("AUTOMATIC", "Automatik", "~Switch", 10);
@@ -1034,7 +1075,8 @@ abstract class HPDevice extends IPSModule {
 	
 	switch( $nodeFeatures )
 	{
-		case 10:
+		case 10: //  "Raumthermostat"
+		case 14: //  "Heizkörper stellantrieb"
 			$lMinVal=4;
 			$lMaxVal=40;
 			break;
@@ -1057,6 +1099,7 @@ abstract class HPDevice extends IPSModule {
 			return $this->SetValue("DIMMERPOS", intval($value));
 
 		case 10: //  "Raumthermostat"
+		case 14: //  "Heizkörper stellantrieb"
 			return $this->SetValue("DESTTEMP", $value);
 			
 		case 1: //  "RolloTron"
@@ -1176,6 +1219,7 @@ abstract class HPDevice extends IPSModule {
 			return $this->GetValue("DIMMERPOS");
 
 		case 10: //  "Raumthermostat"
+		case 14: //  "Heizkörper stellantrieb"
 			return $this->GetValue("DESTTEMP");
 			
 		case 1: //  "RolloTron"
