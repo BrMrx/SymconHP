@@ -858,7 +858,7 @@ abstract class HPDevice extends IPSModule {
    * HP_GetValue($id, $key)
    * Liefert einen Deviceparameter (siehe HP_SetValue)
    */
-  /*
+  
   public function GetValue( $Ident ) {
     switch ($Ident) {
       default:
@@ -867,7 +867,7 @@ abstract class HPDevice extends IPSModule {
     }
     return $value;
   }
-*/
+
 
   /*
    * HP_SetValue($id, $key, $value)

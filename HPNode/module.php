@@ -15,18 +15,6 @@ class HPNode extends HPDevice {
 	$this->RegisterPropertyString("description", "");
   }
   
-    /*
-   * HP_GetValue($id, $key)
-   * Liefert einen Deviceparameter (siehe HP_SetValue)
-   */
-  public function GetValue( string $Ident ) {
-    switch ($Ident) {
-      default:
-        $value = GetValue(@IPS_GetObjectIDByIdent($Ident, $this->InstanceID));
-        break;
-    }
-    return $value;
-  }
 
   protected function GetLinearisation() {
 	  $data = array();
