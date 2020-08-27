@@ -9,6 +9,16 @@ class HPSensor extends HPDevice {
     $this->RegisterPropertyString("UniqueId", "");
 	$this->RegisterPropertyString("description", "");
   }
+  
+  public function GetValue( string $Ident ) {
+    switch ($Ident) {
+      default:
+        $value = GetValue(@IPS_GetObjectIDByIdent($Ident, $this->InstanceID));
+        break;
+    }
+    return $value;
+  }
+
   protected function LinearizeToDevice( $value ) {
 	  return $value;
   }
