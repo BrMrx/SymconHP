@@ -996,7 +996,7 @@ abstract class HPDevice extends IPSModule {
 		if( $value > 400 )
 			$value = 400;
 
-		 $data_json = json_encode( array("name" => "TARGET_TEMPERATURE_CFG","value" => $value ) );		
+		 $data_json = json_encode( array("name" => "TARGET_TEMPERATURE_CFG","value" => ($value / 10) ) );		
 		 $path= "cid=9&did=$uniqueId&goto=$value&command=1";
          break;
 	  

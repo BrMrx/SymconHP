@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.10 ###
+*  Heizkörperstellantrieb Sollwerte müssen für den Homepiloten ab Version 5 mit Nachkommastellen geschickt werden
+
 ### Version 3.09 ###
 *  Heizkörperstellantrieb wird nun unterstützt
 
