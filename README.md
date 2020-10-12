@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.11 ###
+*  36500572_A / Duofern Troll Comfort 5665 für HP Version 5 unterstützt
+
 ### Version 3.10 ###
 *  Heizkörperstellantrieb Sollwerte müssen für den Homepiloten ab Version 5 mit Nachkommastellen geschickt werden
 

@@ -74,6 +74,7 @@ abstract class HPDevice extends IPSModule {
 		'35000462' 		=> array( 'DuoFern Universal Dimmaktor',             2 ),
 		'35140462' 		=> array( 'DuoFern UniversalDimmer 9476',            2 ),
 		'36500572' 		=> array( 'Duofern Troll Comfort 5665',              12),
+		'36500572_A' 	=> array( 'Duofern Troll Comfort 5665',              12),
 		'32000064' 		=> array( 'DuoFern Umweltsensor',                    3 ),
 		'32000064_A' 	=> array( 'DuoFern Umweltsensor Aktor',              3 ),
 		'32000064_S' 	=> array( 'DuoFern Umweltsensor Sensor',             3 ),
