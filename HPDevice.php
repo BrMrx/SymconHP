@@ -78,6 +78,7 @@ abstract class HPDevice extends IPSModule {
 		'32000064' 		=> array( 'DuoFern Umweltsensor',                    3 ),
 		'32000064_A' 	=> array( 'DuoFern Umweltsensor Aktor',              3 ),
 		'32000064_S' 	=> array( 'DuoFern Umweltsensor Sensor',             3 ),
+		'23782076' 		=> array( 'DuoFern RollTube S-Line Sun',				 1 ),
 		'16234511' 		=> array( 'DuoFern RolloTron Comfort 1800/1805/1840',1 ),
 		'16234511_A' 	=> array( 'DuoFern RolloTron Comfort 1800/1805/1840',1 ),
 		'14236011' 		=> array( 'DuoFern RolloTron Pro Comfort 9800',      1 ),
