@@ -49,7 +49,8 @@
         { "value": 10, "label": "Raumthermostat" },
         { "value": 11, "label": "Raumthermostat Relais" },
         { "value": 12, "label": "Troll Comfort" },
-        { "value": 13, "label": "Troll Basis" }
+        { "value": 13, "label": "Troll Basis" },
+        { "value": 14, "label": "Heizkörperstellantrieb" }
       ]
     }, {
       "type": "ValidationTextBox",
