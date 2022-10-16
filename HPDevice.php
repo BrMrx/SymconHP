@@ -169,6 +169,7 @@ abstract class HPDevice extends IPSModule {
     }
 
 
+	$lBattState = false;
 	if( array_key_exists("batteryLow",$data) )
 	{
 		if (is_bool($data['batteryLow']) === true) {
@@ -199,7 +200,19 @@ abstract class HPDevice extends IPSModule {
 		}
 		else if( GetValueInteger( $valuesId ) != $batterie || $this->needsRefresh($valuesId,10*60) ){
 			SetValueInteger( $valuesId, $batterie );
-		}		
+		}	
+		
+		if( $batterie < 6 && !$lBattState )
+		{
+			$lBattState = true;
+			if (!$valuesId = @$this->GetIDForIdent("BATTERY_STATE")) {
+				$valuesId = $this->RegisterVariableBoolean("BATTERY_STATE", "Batteriestatus", "~Battery", 10);
+				SetValueBoolean( $valuesId, $lBattState );
+			}
+			else if( GetValueBoolean( $valuesId ) != $lBattState ){
+				SetValueBoolean( $valuesId, $lBattState );
+			}		
+		}
 	}
 
 
