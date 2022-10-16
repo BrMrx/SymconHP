@@ -31,9 +31,12 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.14 ###
+*  Interner Typ 15 Rauchmelder sollte nun anzeigen ob Rauch erkannt wurde, Batterie Status und Level sollten nun auch bei HP Firmwareversion angezeigt werden
+
 ### Version 3.13 ###
 *  Interner Typ 14 Heizkörperstellantrieb wird nun auch korrekt im Device Formular angezeigt
-* 
+ 
 ### Version 3.12 ###
 *  23782076 / DuoFern RollTube S-Line Sun für HP Version 5 unterstützt
 

@@ -78,6 +78,7 @@ abstract class HPDevice extends IPSModule {
 		'32000064' 		=> array( 'DuoFern Umweltsensor',                    3 ),
 		'32000064_A' 	=> array( 'DuoFern Umweltsensor Aktor',              3 ),
 		'32000064_S' 	=> array( 'DuoFern Umweltsensor Sensor',             3 ),
+		'32001664' 		=> array( 'DuoFern Rauchmelder',              		 15),
 		'23782076' 		=> array( 'DuoFern RollTube S-Line Sun',				 1 ),
 		'16234511' 		=> array( 'DuoFern RolloTron Comfort 1800/1805/1840',1 ),
 		'16234511_A' 	=> array( 'DuoFern RolloTron Comfort 1800/1805/1840',1 ),
@@ -170,7 +171,11 @@ abstract class HPDevice extends IPSModule {
 
 	if( array_key_exists("batteryLow",$data) )
 	{
-		$lBattState = boolval($data['batteryLow']);
+		if (is_bool($data['batteryLow']) === true) {
+			$lBattState = $data['batteryLow'];
+		} else {
+			$lBattState = boolval($data['batteryLow']);
+		}
 		if (!$valuesId = @$this->GetIDForIdent("BATTERY_STATE")) {
 			$valuesId = $this->RegisterVariableBoolean("BATTERY_STATE", "Batteriestatus", "~Battery", 10);
 			SetValueBoolean( $valuesId, $lBattState );
@@ -178,6 +183,23 @@ abstract class HPDevice extends IPSModule {
 		else if( GetValueBoolean( $valuesId ) != $lBattState ){
 			SetValueBoolean( $valuesId, $lBattState );
 		}
+	}
+
+	if( array_key_exists("batteryStatus",$data) )
+	{
+		if (is_integer($data['batteryStatus']) === true) {
+			$batterie = $data['batteryStatus'];
+		} else {
+			$batterie = intval(str_replace( ',','.',$data['batteryStatus']));
+		}
+				
+		if (!$valuesId = @$this->GetIDForIdent("BATTERIE")) {
+			$valuesId = $this->RegisterVariableInteger("BATTERIE", "Batterie Status", "~Intensity.100", 2);
+			SetValueInteger( $valuesId, $batterie );
+		}
+		else if( GetValueInteger( $valuesId ) != $batterie || $this->needsRefresh($valuesId,10*60) ){
+			SetValueInteger( $valuesId, $batterie );
+		}		
 	}
 
 
@@ -210,7 +232,8 @@ abstract class HPDevice extends IPSModule {
 							9 => "Universal-Aktor",
 							12 => "Troll Comfort",
 							13 => "Troll Basis",
-							14 => "Heizkörperstellantrieb"
+							14 => "Heizkörperstellantrieb",
+							15 => "Rauchmelder"
 							);
 			
 			 foreach ($typeList as $typeId => $typeKeword) 
@@ -224,6 +247,42 @@ abstract class HPDevice extends IPSModule {
 				break;
 			 }
 		  }
+		  if( isset( $data['productName'] ) )
+		  {
+		  	$productName = utf8_decode((string)$data['productName']);
+		  	
+		  	// der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
+		  	$typeList = array (
+		  					10 => "Schaltaktor DuoFern Raumthermostat",
+		  					15 => "Raumthermostat 9485",
+		  					11 => "DuoFern Raumthermostat",
+		  					0 => "Schaltaktor",
+		  					1 => "RolloTron",
+		  					2 => "Dimmer",
+		  					3 => "Rohrmotoraktor Umweltsensor",
+		  					4 => "Rohrmotoraktor",
+		  					5 => "Rohrmotor",
+		  					6 => "SX5",
+		  					7 => "Connect-Aktor",
+		  					8 => "RolloTube",
+		  					9 => "Universal-Aktor",
+		  					12 => "Troll Comfort",
+		  					13 => "Troll Basis",
+		  					14 => "Heizkörperstellantrieb",
+		  					15 => "Rauchmelder"
+		  					);
+		  	
+		  	 foreach ($typeList as $typeId => $typeKeword) 
+		  	 {
+		  		$lPos = strpos($productName, $typeKeword );
+		  		if( $lPos === false )
+		  			continue;
+		  		
+		  		$nodeFeatures = $typeId;
+		  		$lbDefault=false;
+		  		break;
+		  	 }
+		    }
 		  else if( isset( $data['deviceNumber'] ) )
 		  {
 		  
@@ -495,7 +554,7 @@ abstract class HPDevice extends IPSModule {
 		    foreach ($sensorArray as $sKey => $sValue) {
 
 				switch($sKey)
-				{
+				{					
 					// Sonnensensor
 					case 'Sonne':
 						$sun = ($sValue != "Nicht erkannt");
@@ -715,6 +774,23 @@ abstract class HPDevice extends IPSModule {
 						}
 					break;
 
+					// Rauchmelder
+					case 'smoke_detected':
+						if (is_bool($sValue) === true) {
+							$smoke = $sValue;
+						} else {
+							$smoke = boolval(sValue);
+						}
+						
+						if (!$valuesId = @$this->GetIDForIdent("SMOKE")) {
+							$valuesId = $this->RegisterVariableBoolean("SMOKE", "Rauch", "SmokeSensor.HP", 1);
+							SetValueBoolean( $valuesId, $smoke );
+						}
+						else if( GetValueBoolean( $valuesId ) != $smoke ){
+							SetValueBoolean( $valuesId, $smoke );
+						}
+					break;
+					
 					// Rauchsensor
 					case 'Rauch':
 						$smoke = ($sValue != "Nicht erkannt");
