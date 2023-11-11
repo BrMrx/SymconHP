@@ -46,7 +46,7 @@ abstract class HPDevice extends IPSModule {
     parent::Create();
   }
 
-  protected function GetBridge() {
+  public function GetBridge() {
     $instance = IPS_GetInstance($this->InstanceID);
     return ($instance['ConnectionID'] > 0) ? $instance['ConnectionID'] : false;
   }
@@ -61,7 +61,7 @@ abstract class HPDevice extends IPSModule {
   }
 
 
-  private function GetProductInfoFromDeviceNumber( $ProductId )
+  public function GetProductInfoFromDeviceNumber( $ProductId )
   {
 	  $typeList = array (
 		'35000864' 		=> array( 'DuoFern Connect Aktor 9477',              0 ),

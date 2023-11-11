@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.16 ###
+*  Anpassungen für IP Symcon Version 7
+
 ### Version 3.15 ###
 *  Ab einem Batterie Level kleiner gleich 5% wird der Batterie Low Status gesetzt, falls er noch nicht gesetzt war
 

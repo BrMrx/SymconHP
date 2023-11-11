@@ -2,11 +2,6 @@
 
 class HPBridge extends IPSModule {
 
-  private $Host = "";
-  private $HomePilotVersion = 0;
-  private $HomePilotCategory = 0;
-  private $HomePilotSensorCategory = 0;
-
   public function Create() {
     parent::Create();
     $this->RegisterPropertyString("Host", "");
@@ -29,7 +24,7 @@ class HPBridge extends IPSModule {
     $this->ValidateConfiguration();
   }
 
-  protected function RegisterTimer($ident, $interval, $script) {
+  public function RegisterTimer($ident, $interval, $script) {
 	$id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
 
     if ($id && IPS_GetEvent($id)['EventType'] <> 1) {
@@ -70,32 +65,20 @@ class HPBridge extends IPSModule {
   }
 
 
-  private function GetHomePilotCategory() {
-    if($this->HomePilotCategory == '') {
-    	$this->HomePilotCategory = $this->ReadPropertyInteger('HomePilotCategory');
-    }	
-    return $this->HomePilotCategory;
+  public function GetHomePilotCategory() {
+    return $this->ReadPropertyInteger('HomePilotCategory');
   }
   
-  private function GetHomePilotSensorCategory() {
-    if($this->HomePilotSensorCategory == '') {
-    	$this->HomePilotSensorCategory = $this->ReadPropertyInteger('HomePilotSensorCategory');
-    }	
-    return $this->HomePilotSensorCategory;
+  public function GetHomePilotSensorCategory() {
+    return $this->ReadPropertyInteger('HomePilotSensorCategory');
   }
 
-  private function GetHost() {
-    if($this->Host == '') {
-    	$this->Host = $this->ReadPropertyString('Host');
-    }
-    return $this->Host;
-  }
-  private function GetHomePilotVersion() {
-    if($this->HomePilotVersion == '') {
-    	$this->HomePilotVersion = $this->ReadPropertyInteger('HomePilotVersion');
-    }
-    return $this->HomePilotVersion;
-  }
+  public function GetHost() {
+    return	$this->ReadPropertyString('Host');
+	}
+  public function GetHomePilotVersion() {
+    return  $this->ReadPropertyInteger('HomePilotVersion');
+ }
   
   public function ProtocolVersion() {
 		return $this->GetHomePilotVersion();
@@ -304,9 +287,9 @@ class HPBridge extends IPSModule {
    * HP_SyncNodes($bridgeId)
    * Abgleich aller Knoten
    */
-  private function SyncNodes() {
-    $HomePilotCategoryId = $this->GetHomePilotCategory();
-    if(@$HomePilotCategoryId > 0) {
+  public function SyncNodes() {
+    $HomePilotCategoryId = $this->ReadPropertyInteger("HomePilotCategory");
+    if( $HomePilotCategoryId > 0) {
       $nodes = $this->Request('devices=1');
 	  
 	 	  
@@ -356,8 +339,8 @@ class HPBridge extends IPSModule {
    * HP_SyncSensors($bridgeId)
    * Abgleich aller Sensoren
    */
-   private function SyncSensors() {
-    $HomePilotSensorCategory = $this->GetHomePilotSensorCategory();
+   public function SyncSensors() {
+    $HomePilotSensorCategory = $this->ReadPropertyInteger("HomePilotSensorCategory");
     if(@$HomePilotSensorCategory > 0) {
       $sensors = $this->Request('meters=1');
 	  
@@ -504,11 +487,11 @@ class HPBridge extends IPSModule {
   }
 
 
-  private function NodeGuid() {
+  public function NodeGuid() {
     return '{F57A1315-EC89-4E96-B883-C17095BC43A7}';
   }
 
-  private function SensorGuid() {
+  public function SensorGuid() {
     return '{C6D93407-499E-4C34-B7BF-BD8E89007D83}';
   }
   
