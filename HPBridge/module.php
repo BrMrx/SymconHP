@@ -309,9 +309,13 @@ class HPBridge extends IPSModule {
 			IPS_LogMessage("HPBridge","Device create new ($name:$uniqueId)");
           }
 
-          IPS_SetParent($deviceId, $HomePilotCategoryId);
-          IPS_SetName($deviceId, $name);
-
+		  if( IPS_GetParent ($deviceId) != $HomePilotCategoryId) {
+          	IPS_SetParent($deviceId, $HomePilotCategoryId);
+          }
+          
+          if( IPS_GetName($deviceId) != $name ) {
+          	IPS_SetName($deviceId, $name);
+          }
 
           // Verbinde Knoten mit Bridge
           if (IPS_GetInstance($deviceId)['ConnectionID'] <> $this->InstanceID) {
@@ -361,10 +365,14 @@ class HPBridge extends IPSModule {
             IPS_SetProperty($sensorId, 'UniqueId', $uniqueId);
 			IPS_LogMessage("HPBridge","Sensor create new ($name:$uniqueId)");
           }
-
-          IPS_SetParent($sensorId, $HomePilotSensorCategory);
-          IPS_SetName($sensorId, $name);
-
+          
+		  if( IPS_GetParent ($sensorId) != $HomePilotSensorCategory) {
+          	IPS_SetParent($sensorId, $HomePilotSensorCategory);
+          }
+          
+          if( IPS_GetName($sensorId) != $name ) {
+          	IPS_SetName($sensorId, $name);
+          }
 
           // Verbinde Knoten mit Bridge
           if (IPS_GetInstance($sensorId)['ConnectionID'] <> $this->InstanceID) {
