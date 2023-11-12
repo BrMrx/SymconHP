@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+### Version 3.17 ###
+*  IPS_ApplyChanges wird nur noch aufgerufen wenn IPS_HasChanges true zurück liefert - dadurch müssten die häufigen Logmeldungen entfallen
+
 ### Version 3.16 ###
 *  Anpassungen für IP Symcon Version 7
 

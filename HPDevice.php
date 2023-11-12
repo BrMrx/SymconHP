@@ -332,7 +332,10 @@ abstract class HPDevice extends IPSModule {
     if ($dirty) 
     {
 		$this->SendDebug("ApplyJsonData", "Instanz ".$this->InstanceID." apply changes", 0 );
-		IPS_ApplyChanges($this->InstanceID);
+		 if(IPS_HasChanges($this->InstanceID))
+		 {
+              IPS_ApplyChanges($this->InstanceID);
+	     }
 	}
 
 

@@ -319,7 +319,10 @@ class HPBridge extends IPSModule {
             IPS_ConnectInstance($deviceId, $this->InstanceID);
           }
 		  
-          IPS_ApplyChanges($deviceId);
+		  if(IPS_HasChanges($deviceId))
+		  {
+              IPS_ApplyChanges($deviceId);
+		  }
 		  
 		  // Daten zuordnen, Variablen anlegen
 		  HP_ApplyJsonData($deviceId, json_encode($node));
@@ -369,7 +372,10 @@ class HPBridge extends IPSModule {
             IPS_ConnectInstance($sensorId, $this->InstanceID);
           }
 		  
-          IPS_ApplyChanges($sensorId);
+		  if(IPS_HasChanges($sensorId))
+		  {
+              IPS_ApplyChanges($sensorId);
+		  }
 		  
 		  if( $this->ProtocolVersion() == 4 )
 		  {
