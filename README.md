@@ -32,7 +32,7 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 ## Änderungen
 
 ### Version 3.18 ###
-*  Name und Parent ID von Konten und Sensoren nur dann ändern wenn sie nicht bereits gesetzt worden sind
+*  Name und Parent ID von Knoten und Sensoren nur dann ändern wenn sie nicht bereits gesetzt worden sind
  
 ### Version 3.17 ###
 *  IPS_ApplyChanges wird nur noch aufgerufen wenn IPS_HasChanges true zurück liefert - dadurch müssten die häufigen Logmeldungen entfallen
