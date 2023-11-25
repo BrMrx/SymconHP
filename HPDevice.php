@@ -73,6 +73,7 @@ abstract class HPDevice extends IPSModule {
 		'45059071' 		=> array( 'RolloPort SX5 DuoFern RP-SX5DF-900N-3',   6 ),
 		'35000462' 		=> array( 'DuoFern Universal Dimmaktor',             2 ),
 		'35140462' 		=> array( 'DuoFern UniversalDimmer 9476',            2 ),
+		'10502001' 		=> array( 'Duofern Zeitschaltuhr premium smart',     12),
 		'36500572' 		=> array( 'Duofern Troll Comfort 5665',              12),
 		'36500572_A' 	=> array( 'Duofern Troll Comfort 5665',              12),
 		'32000064' 		=> array( 'DuoFern Umweltsensor',                    3 ),
@@ -399,22 +400,25 @@ abstract class HPDevice extends IPSModule {
 					SetValueInteger( $valuesId, $cmdpos );
 				}
 
-				$automatik = ($values['Manuellbetrieb'] == 0);
-				if (!$valuesId = @$this->GetIDForIdent("AUTOMATIC")) {
-					$valuesId = $this->RegisterVariableBoolean("AUTOMATIC", "Automatik", "~Switch", 10);
-					$this->EnableAction("AUTOMATIC");
-					SetValueBoolean( $valuesId, $automatik );
-					if( $automatik )
-						IPS_SetIcon($valuesId, 'Electricity');
-					else
-						IPS_SetIcon($valuesId, 'Execute');
-				}
-				else if( GetValueBoolean( $valuesId ) != $automatik ){
-					SetValueBoolean( $valuesId, $automatik );
-					if( $automatik )
-						IPS_SetIcon($valuesId, 'Electricity');
-					else
-						IPS_SetIcon($valuesId, 'Execute');
+				if( isset($values['Manuellbetrieb']) )
+				{
+					$automatik =  ($values['Manuellbetrieb'] == 0);
+					if (!$valuesId = @$this->GetIDForIdent("AUTOMATIC")) {
+						$valuesId = $this->RegisterVariableBoolean("AUTOMATIC", "Automatik", "~Switch", 10);
+						$this->EnableAction("AUTOMATIC");
+						SetValueBoolean( $valuesId, $automatik );
+						if( $automatik )
+							IPS_SetIcon($valuesId, 'Electricity');
+						else
+							IPS_SetIcon($valuesId, 'Execute');
+					}
+					else if( GetValueBoolean( $valuesId ) != $automatik ){
+						SetValueBoolean( $valuesId, $automatik );
+						if( $automatik )
+							IPS_SetIcon($valuesId, 'Electricity');
+						else
+							IPS_SetIcon($valuesId, 'Execute');
+					}
 				}
 			break;
 

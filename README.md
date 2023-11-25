@@ -31,6 +31,9 @@ Da die prozentualen Positionen der RolloTron Gurtwickler in der Regel nicht mit 
 
 ## Änderungen
 
+## Version 3.19 ###
+* Duofern Zeitschaltuhr premium smart wird nun unterstützt
+
 ### Version 3.18 ###
 *  Name und Parent ID von Knoten und Sensoren nur dann ändern wenn sie nicht bereits gesetzt worden sind
  
