@@ -73,6 +73,7 @@ abstract class HPDevice extends IPSModule {
 		'45059071' 		=> array( 'RolloPort SX5 DuoFern RP-SX5DF-900N-3',   6 ),
 		'35000462' 		=> array( 'DuoFern Universal Dimmaktor',             2 ),
 		'35140462' 		=> array( 'DuoFern UniversalDimmer 9476',            2 ),
+		'10502001' 		=> array( 'Duofern Zeitschaltuhr premium smart',     12),
 		'36500572' 		=> array( 'Duofern Troll Comfort 5665',              12),
 		'36500572_A' 	=> array( 'Duofern Troll Comfort 5665',              12),
 		'32000064' 		=> array( 'DuoFern Umweltsensor',                    3 ),
