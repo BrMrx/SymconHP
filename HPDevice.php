@@ -399,7 +399,7 @@ abstract class HPDevice extends IPSModule {
 					SetValueInteger( $valuesId, $cmdpos );
 				}
 
-				$automatik = ($values['Manuellbetrieb'] == 0);
+				$automatik = (isset($data['Manuellbetrieb']) && $data['Manuellbetrieb'] == 0);
 				if (!$valuesId = @$this->GetIDForIdent("AUTOMATIC")) {
 					$valuesId = $this->RegisterVariableBoolean("AUTOMATIC", "Automatik", "~Switch", 10);
 					$this->EnableAction("AUTOMATIC");
