@@ -79,6 +79,7 @@ abstract class HPDevice extends IPSModule {
 		'32000064' 		=> array( 'DuoFern Umweltsensor',                    3 ),
 		'32000064_A' 	=> array( 'DuoFern Umweltsensor Aktor',              3 ),
 		'32000064_S' 	=> array( 'DuoFern Umweltsensor Sensor',             3 ),
+		'32210069' 		=> array( 'DuoFern Sonnensensor 9478-1',             15),
 		'32001664' 		=> array( 'DuoFern Rauchmelder',              		 15),
 		'23782076' 		=> array( 'DuoFern RollTube S-Line Sun',				 1 ),
 		'16234511' 		=> array( 'DuoFern RolloTron Comfort 1800/1805/1840',1 ),
@@ -247,7 +248,7 @@ abstract class HPDevice extends IPSModule {
 							12 => "Troll Comfort",
 							13 => "Troll Basis",
 							14 => "Heizkörperstellantrieb",
-							15 => "Rauchmelder"
+							15 => "Rauchmelder/Sensor"
 							);
 			
 			 foreach ($typeList as $typeId => $typeKeword) 
@@ -283,7 +284,7 @@ abstract class HPDevice extends IPSModule {
 		  					12 => "Troll Comfort",
 		  					13 => "Troll Basis",
 		  					14 => "Heizkörperstellantrieb",
-		  					15 => "Rauchmelder"
+		  					15 => "Rauchmelder/Sensor"
 		  					);
 		  	
 		  	 foreach ($typeList as $typeId => $typeKeword) 
@@ -851,6 +852,22 @@ abstract class HPDevice extends IPSModule {
 						}
 					break;
 
+					// Bewegungssensor
+					case 'vibration_detected':
+						if (is_bool($sValue) === true) {
+							$movement = $sValue;
+						} else {
+							$movement = boolval(sValue);
+						}
+						
+						if (!$valuesId = @$this->GetIDForIdent("MOTION")) {
+							$valuesId = $this->RegisterVariableBoolean("MOTION", "Vibration", "~Motion", 1);
+							SetValueBoolean( $valuesId, $movement );
+						}
+						else if( GetValueBoolean( $valuesId ) != $movement ){
+							SetValueBoolean( $valuesId, $movement );
+						}
+					break;
 
 					default:
 						$this->SendDebug( "ApplyJsonData","unknown Sensor Value '$sKey': $sValue", 0 );
