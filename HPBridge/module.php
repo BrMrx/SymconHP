@@ -299,7 +299,7 @@ class HPBridge extends IPSModule {
 
 		  $uniqueId = $node->did;
 			
-          $name = utf8_decode((string)$node->name);
+          $name = (string)$node->name;
  		  
           $deviceId = $this->GetDeviceByUniqueId($uniqueId);
 
@@ -357,7 +357,7 @@ class HPBridge extends IPSModule {
 
 		  $uniqueId = $sensor->did;
 			
-          $name = utf8_decode((string)$sensor->name);
+          $name = (string)$sensor->name;
           $sensorId = $this->GetDeviceByUniqueId($uniqueId);
 
           if ($sensorId == 0) {
