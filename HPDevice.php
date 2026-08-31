@@ -155,14 +155,14 @@ abstract class HPDevice extends IPSModule {
      * Properties
      */
 
-    $name = utf8_decode((string)$data['name']);
+    $name = (string)$data['name'];
 	
     if (IPS_GetName($this->InstanceID) != $name) {
       IPS_SetName($this->InstanceID, $name);
       $dirty = true;
     }
 	
-    $description = utf8_decode((string)$data['description']);
+    $description = (string)$data['description'];
     $lOdDescription = IPS_GetProperty($this->InstanceID, 'description');
     if ( $lOdDescription != $description) {
         IPS_SetProperty($this->InstanceID, 'description', $description);
@@ -228,7 +228,7 @@ abstract class HPDevice extends IPSModule {
 
 		if( isset( $data['productName'] ) )
 		{
-			$productName = utf8_decode((string)$data['productName']);
+			$productName = (string)$data['productName'];
 			
 			// der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
 			$typeList = array (
@@ -264,7 +264,7 @@ abstract class HPDevice extends IPSModule {
 		  }
 		  if( isset( $data['productName'] ) )
 		  {
-		  	$productName = utf8_decode((string)$data['productName']);
+		  	$productName = (string)$data['productName'];
 		  	
 		  	// der Raumthermostat heißt: "Schaltaktor DuoFern Raumthermostat" und muss deshalb vor dem Schaltaktor gefunden werden
 		  	$typeList = array (
